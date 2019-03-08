@@ -13,7 +13,7 @@ class Home extends Component {
             <Header />
             <main role="main">
                 <Promotion />
-                <ProductList />>
+                <ProductList />
             </main>
             <Footer />
         </div>
