@@ -398,7 +398,7 @@ type Product {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 type ProductConnection {
@@ -411,7 +411,7 @@ input ProductCreateInput {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 input ProductCreateManyInput {
@@ -433,8 +433,8 @@ enum ProductOrderByInput {
   desc_DESC
   photo_ASC
   photo_DESC
-  Price_ASC
-  Price_DESC
+  price_ASC
+  price_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -446,7 +446,7 @@ type ProductPreviousValues {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 input ProductScalarWhereInput {
@@ -506,20 +506,20 @@ input ProductScalarWhereInput {
   photo_not_starts_with: String
   photo_ends_with: String
   photo_not_ends_with: String
-  Price: String
-  Price_not: String
-  Price_in: [String!]
-  Price_not_in: [String!]
-  Price_lt: String
-  Price_lte: String
-  Price_gt: String
-  Price_gte: String
-  Price_contains: String
-  Price_not_contains: String
-  Price_starts_with: String
-  Price_not_starts_with: String
-  Price_ends_with: String
-  Price_not_ends_with: String
+  price: String
+  price_not: String
+  price_in: [String!]
+  price_not_in: [String!]
+  price_lt: String
+  price_lte: String
+  price_gt: String
+  price_gte: String
+  price_contains: String
+  price_not_contains: String
+  price_starts_with: String
+  price_not_starts_with: String
+  price_ends_with: String
+  price_not_ends_with: String
   AND: [ProductScalarWhereInput!]
   OR: [ProductScalarWhereInput!]
   NOT: [ProductScalarWhereInput!]
@@ -547,21 +547,21 @@ input ProductUpdateDataInput {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 input ProductUpdateInput {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 input ProductUpdateManyDataInput {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 input ProductUpdateManyInput {
@@ -580,7 +580,7 @@ input ProductUpdateManyMutationInput {
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 input ProductUpdateManyWithWhereNestedInput {
@@ -656,20 +656,20 @@ input ProductWhereInput {
   photo_not_starts_with: String
   photo_ends_with: String
   photo_not_ends_with: String
-  Price: String
-  Price_not: String
-  Price_in: [String!]
-  Price_not_in: [String!]
-  Price_lt: String
-  Price_lte: String
-  Price_gt: String
-  Price_gte: String
-  Price_contains: String
-  Price_not_contains: String
-  Price_starts_with: String
-  Price_not_starts_with: String
-  Price_ends_with: String
-  Price_not_ends_with: String
+  price: String
+  price_not: String
+  price_in: [String!]
+  price_not_in: [String!]
+  price_lt: String
+  price_lte: String
+  price_gt: String
+  price_gte: String
+  price_contains: String
+  price_not_contains: String
+  price_starts_with: String
+  price_not_starts_with: String
+  price_ends_with: String
+  price_not_ends_with: String
   AND: [ProductWhereInput!]
   OR: [ProductWhereInput!]
   NOT: [ProductWhereInput!]

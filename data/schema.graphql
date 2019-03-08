@@ -1,12 +1,14 @@
+scalar Object
+
 type Query {
   products: [Product!]!
   shoppingCart(userId: ID!): [Product!]!
 }
 
 type Mutation {
-  addProduct(name: String!): Product
+  createProduct(name: String!): Product
   editProduct(productId: ID!, details: Object): Product
-  addCustomer(email: String!, password: String!): Customer
+  createCustomer(email: String!, password: String!): Customer
 }
 
 # type User {
@@ -25,17 +27,17 @@ type Mutation {
 
 
 type Product {
-  id: ID! @unique
+  id: ID!
   name: String
   desc: String
   photo: String
-  Price: String
+  price: String
 }
 
 
 type Customer {
-  id: ID! @unique
-  email: String! @unique
+  id: ID!
+  email: String!
   firstName: String
   lastName: String
   address: String
@@ -46,8 +48,8 @@ type Customer {
 }
 
 type Admin {
-  id: ID! @unique
-  username: String! @unique
+  id: ID!
+  username: String!
   password: String!
   # TODO encryption?
 }

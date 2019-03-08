@@ -210,8 +210,8 @@ export type ProductOrderByInput =
   | "desc_DESC"
   | "photo_ASC"
   | "photo_DESC"
-  | "Price_ASC"
-  | "Price_DESC"
+  | "price_ASC"
+  | "price_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -354,20 +354,20 @@ export interface ProductWhereInput {
   photo_not_starts_with?: String;
   photo_ends_with?: String;
   photo_not_ends_with?: String;
-  Price?: String;
-  Price_not?: String;
-  Price_in?: String[] | String;
-  Price_not_in?: String[] | String;
-  Price_lt?: String;
-  Price_lte?: String;
-  Price_gt?: String;
-  Price_gte?: String;
-  Price_contains?: String;
-  Price_not_contains?: String;
-  Price_starts_with?: String;
-  Price_not_starts_with?: String;
-  Price_ends_with?: String;
-  Price_not_ends_with?: String;
+  price?: String;
+  price_not?: String;
+  price_in?: String[] | String;
+  price_not_in?: String[] | String;
+  price_lt?: String;
+  price_lte?: String;
+  price_gt?: String;
+  price_gte?: String;
+  price_contains?: String;
+  price_not_contains?: String;
+  price_starts_with?: String;
+  price_not_starts_with?: String;
+  price_ends_with?: String;
+  price_not_ends_with?: String;
   AND?: ProductWhereInput[] | ProductWhereInput;
   OR?: ProductWhereInput[] | ProductWhereInput;
   NOT?: ProductWhereInput[] | ProductWhereInput;
@@ -518,7 +518,7 @@ export interface ProductCreateInput {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface CustomerUpdateInput {
@@ -558,7 +558,7 @@ export interface ProductUpdateDataInput {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface ProductUpsertWithWhereUniqueNestedInput {
@@ -624,20 +624,20 @@ export interface ProductScalarWhereInput {
   photo_not_starts_with?: String;
   photo_ends_with?: String;
   photo_not_ends_with?: String;
-  Price?: String;
-  Price_not?: String;
-  Price_in?: String[] | String;
-  Price_not_in?: String[] | String;
-  Price_lt?: String;
-  Price_lte?: String;
-  Price_gt?: String;
-  Price_gte?: String;
-  Price_contains?: String;
-  Price_not_contains?: String;
-  Price_starts_with?: String;
-  Price_not_starts_with?: String;
-  Price_ends_with?: String;
-  Price_not_ends_with?: String;
+  price?: String;
+  price_not?: String;
+  price_in?: String[] | String;
+  price_not_in?: String[] | String;
+  price_lt?: String;
+  price_lte?: String;
+  price_gt?: String;
+  price_gte?: String;
+  price_contains?: String;
+  price_not_contains?: String;
+  price_starts_with?: String;
+  price_not_starts_with?: String;
+  price_ends_with?: String;
+  price_not_ends_with?: String;
   AND?: ProductScalarWhereInput[] | ProductScalarWhereInput;
   OR?: ProductScalarWhereInput[] | ProductScalarWhereInput;
   NOT?: ProductScalarWhereInput[] | ProductScalarWhereInput;
@@ -652,7 +652,7 @@ export interface ProductUpdateManyDataInput {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface CustomerUpdateManyMutationInput {
@@ -668,14 +668,14 @@ export interface ProductUpdateInput {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface ProductUpdateManyMutationInput {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface AdminSubscriptionWhereInput {
@@ -871,7 +871,7 @@ export interface Product {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface ProductPromise extends Promise<Product>, Fragmentable {
@@ -879,7 +879,7 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
   name: () => Promise<String>;
   desc: () => Promise<String>;
   photo: () => Promise<String>;
-  Price: () => Promise<String>;
+  price: () => Promise<String>;
 }
 
 export interface ProductSubscription
@@ -889,7 +889,7 @@ export interface ProductSubscription
   name: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
   photo: () => Promise<AsyncIterator<String>>;
-  Price: () => Promise<AsyncIterator<String>>;
+  price: () => Promise<AsyncIterator<String>>;
 }
 
 export interface CustomerConnection {
@@ -1154,7 +1154,7 @@ export interface ProductPreviousValues {
   name?: String;
   desc?: String;
   photo?: String;
-  Price?: String;
+  price?: String;
 }
 
 export interface ProductPreviousValuesPromise
@@ -1164,7 +1164,7 @@ export interface ProductPreviousValuesPromise
   name: () => Promise<String>;
   desc: () => Promise<String>;
   photo: () => Promise<String>;
-  Price: () => Promise<String>;
+  price: () => Promise<String>;
 }
 
 export interface ProductPreviousValuesSubscription
@@ -1174,7 +1174,7 @@ export interface ProductPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
   photo: () => Promise<AsyncIterator<String>>;
-  Price: () => Promise<AsyncIterator<String>>;
+  price: () => Promise<AsyncIterator<String>>;
 }
 
 /*
