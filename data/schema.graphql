@@ -1,25 +1,53 @@
 type Query {
-  publishedPosts: [Post!]!
-  post(postId: ID!): Post
-  postsByUser(userId: ID!): [Post!]!
+  products: [Product!]!
+  shoppingCart(userId: ID!): [Product!]!
 }
 
 type Mutation {
-  createUser(name: String!): User
-  createDraft(title: String!, userId: ID!): Post
-  publish(postId: ID!): Post
+  addProduct(name: String!): Product
+  editProduct(productId: ID!, details: Object): Product
+  addCustomer(email: String!, password: String!): Customer
 }
 
-type User {
-  id: ID!
-  email: String
-  name: String!
-  posts: [Post!]!
+# type User {
+#   id: ID!
+#   email: String
+#   name: String!
+#   posts: [Post!]!
+# }
+
+# type Post {
+#   id: ID!
+#   title: String!
+#   published: Boolean!
+#   author: User
+# }
+
+
+type Product {
+  id: ID! @unique
+  name: String
+  desc: String
+  photo: String
+  Price: String
 }
 
-type Post {
-  id: ID!
-  title: String!
-  published: Boolean!
-  author: User
+
+type Customer {
+  id: ID! @unique
+  email: String! @unique
+  firstName: String
+  lastName: String
+  address: String
+  phone: String
+  password: String!
+  # TODO encryption?
+  productsByCustomer: [Product!]!
+}
+
+type Admin {
+  id: ID! @unique
+  username: String! @unique
+  password: String!
+  # TODO encryption?
 }
