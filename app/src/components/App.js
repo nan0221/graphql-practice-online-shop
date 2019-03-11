@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../styles/App.css';
 import { Switch, Route } from 'react-router-dom'
 import Home from './Home'
+import Login from './Login'
 
 class App extends Component {
   render() {
@@ -9,6 +10,7 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path="/" component={Home} />
+          {/* <Route exact path="/login" component={Login} /> */}
         </Switch>
         {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
