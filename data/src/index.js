@@ -1,5 +1,8 @@
 const { prisma } = require('../generated/prisma-client')
 const { GraphQLServer } = require('graphql-yoga')
+import Mutation from '../resolvers/Mutation'
+import Query from '../resolvers/Query'
+import Subscription from '../resolvers/Subscription'
 
 const resolvers11 = {
   Query: {
@@ -58,7 +61,7 @@ const resolvers11 = {
   }
 }
 
-const resolvers = {
+const resolvers22 = {
   Mutation: {
     createCustomer(root, args, context) {
       return context.prisma.createCustomer(
@@ -66,6 +69,12 @@ const resolvers = {
       )
     }
   }
+}
+
+const resolvers = {
+  Mutation,
+  Query,
+  Subscription
 }
 
 const server = new GraphQLServer({
