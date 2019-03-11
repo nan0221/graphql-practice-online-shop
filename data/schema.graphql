@@ -1,7 +1,7 @@
 scalar Object
 
 type Query {
-  products: [Product!]!
+  products: [Product!]
   shoppingCart(userId: ID!): [Product!]!
 }
 
@@ -10,20 +10,6 @@ type Mutation {
   editProduct(productId: ID!, details: Object): Product
   createCustomer(email: String!, password: String!): Customer
 }
-
-# type User {
-#   id: ID!
-#   email: String
-#   name: String!
-#   posts: [Post!]!
-# }
-
-# type Post {
-#   id: ID!
-#   title: String!
-#   published: Boolean!
-#   author: User
-# }
 
 
 type Product {
