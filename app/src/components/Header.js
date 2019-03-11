@@ -17,10 +17,12 @@ class Header extends Component {
                         </svg>
                         <strong>Online store</strong>
                     </a>
+
+                    <span className="d-flex">
+                        <Link to="login" className=""><button type="button" className="btn btn-outline-light">Login</button></Link>
+                    </span>
                 </div>
-                <div>
-                    <Link to="login" className="">Login</Link>
-                </div>
+                
             </div>
         </header>
     );
