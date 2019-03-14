@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import '../styles/App.css';
 import '../styles/template.css'
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { login } from '../actions/login'
+
+const mapStateToProps = state => ({
+  state
+ })
+
+const mapDispatchToProps = dispatch => ({
+  login: () => dispatch(login())
+})
 
 class Header extends Component {
   render() {
@@ -19,7 +29,8 @@ class Header extends Component {
                     </a>
 
                     <span className="d-flex">
-                        <Link to="login" className=""><button type="button" className="btn btn-outline-light">Login</button></Link>
+                        <button type="button" className="btn btn-outline-light" onClick={this.props.login}>Login</button>
+                        {/* <Link to="login" className=""><button type="button" className="btn btn-outline-light">Login</button></Link> */}
                     </span>
                 </div>
                 
@@ -29,4 +40,4 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

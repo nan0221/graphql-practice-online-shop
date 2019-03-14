@@ -29,6 +29,7 @@ class App extends Component {
             JSON.stringify(this.props, null, 4)
           }
         </pre>
+        <Login />
         <Edit />
         <Switch>
           <Route exact path="/" component={Home} />
