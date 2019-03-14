@@ -18,8 +18,23 @@ const mapDispatchToProps = dispatch => ({
 class Edit extends Component {
     render() {
         return (
-            <div className="Edit modal-open">
-                <Modal show={this.props.state.editProductReducer.editModalOpen} onHide={this.props.closeEditModal}>
+            <div className="Edit">
+                {/* Edit Product */}
+                <Modal show={this.props.state.editProductReducer.editModalOpen && this.props.state.editProductReducer.mode === 'edit'} onHide={this.props.closeEditModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        ...
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.props.closeEditModal}>Cancel</Button>
+                        <Button variant="primary">Save Changes</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/* Add New Product */}
+                <Modal show={this.props.state.editProductReducer.editModalOpen && this.props.state.editProductReducer.mode === 'add'} onHide={this.props.closeEditModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Modal heading</Modal.Title>
                     </Modal.Header>

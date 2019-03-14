@@ -5,13 +5,15 @@ import { withRouter } from 'react-router'
 // import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { login } from '../actions/login'
+import { addProduct } from '../actions/addProduct'
 
 const mapStateToProps = state => ({
   state
  })
 
 const mapDispatchToProps = dispatch => ({
-  login: () => dispatch(login())
+  login: () => dispatch(login()),
+  addProduct: () => dispatch(addProduct()),
 })
 
 class Header extends Component {
@@ -29,6 +31,7 @@ class Header extends Component {
                     </a>
 
                     <span className="d-flex">
+                        <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
                         <button type="button" className="btn btn-outline-light" onClick={this.props.login}>Login</button>
                         {/* <Link to="login" className=""><button type="button" className="btn btn-outline-light">Login</button></Link> */}
                     </span>
