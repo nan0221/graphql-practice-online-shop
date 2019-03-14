@@ -2,8 +2,21 @@ import React, { Component } from 'react';
 import '../styles/App.css';
 import '../styles/template.css'
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import { connect } from 'react-redux';
+import { editProduct } from '../actions/editProduct'
+
+const mapStateToProps = state => ({
+  state
+ })
+
+const mapDispatchToProps = dispatch => ({
+  editProduct: (id) => dispatch(editProduct(id))
+})
 
 class Product extends Component {
+  editProduct = (event) => {
+    this.props.editProduct(this.props.id);
+  }  
   render() {
     return (
       <div className="col-md-4">
@@ -16,7 +29,7 @@ class Product extends Component {
                 <div className="d-flex justify-content-between align-items-center m-t-10">
                     <div className="btn-group">
                     <button type="button" className="btn btn-sm btn-outline-secondary">Add to cart</button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
+                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => this.props.editProduct(this.props.id)}>Edit</button>
                     </div>
                     <small className="text-muted">${this.props.price}.00</small>
                 </div>
@@ -27,4 +40,4 @@ class Product extends Component {
   }
 }
 
-export default Product;
+export default connect(mapStateToProps, mapDispatchToProps)(Product);

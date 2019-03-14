@@ -8,6 +8,8 @@ import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import configureStore from './store';
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:4000'
@@ -21,7 +23,9 @@ const client = new ApolloClient({
 ReactDOM.render(
     <BrowserRouter>
         <ApolloProvider client={client}>
-            <App />
+            <Provider store={configureStore()}>
+                <App />
+            </Provider>
         </ApolloProvider>
     </BrowserRouter>,
     document.getElementById('root')
