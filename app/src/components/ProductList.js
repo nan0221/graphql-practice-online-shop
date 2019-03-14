@@ -28,7 +28,7 @@ class ProductList extends Component {
                         <Query query={ALL_PRODUCTS}>
                             {({ loading, error, data }) => {
                                 if (loading) return null
-                                if (error) return <div>Error</div>
+                                if (error) return <div>{error.message}</div>
                                 const products = data.products
                                 return products.map(product => <Product key={product.id} name={product.name} desc={product.desc} price={product.price} photo={product.photo} id={product.id}/>)
                             }}

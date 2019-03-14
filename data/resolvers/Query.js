@@ -3,6 +3,14 @@ async function products(parent, args, context) {
     return allProducts
 }
 
+async function product(parent, args, context) {
+    const product = await context.prisma.product({
+        id: args.id
+    })
+    return product
+}
+
 module.exports = {
-    products
+    products,
+    product
 }

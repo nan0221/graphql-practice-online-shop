@@ -66,3 +66,15 @@ ul {
 ul li {
   text-indent: 0%
 }
+
+.display-block {
+  display: block
+}
+
+.w-100pc {
+  width: 100%
+}
+
+.h-auto {
+  height: auto
+}

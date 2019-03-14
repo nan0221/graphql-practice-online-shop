@@ -1,7 +1,8 @@
 scalar Object
 
 type Query {
-  products: [Product!]
+  products: [Product!]!
+  product(id: ID!): Product!
   shoppingCart(userId: ID!): [Product!]!
 }
 
