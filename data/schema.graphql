@@ -8,10 +8,9 @@ type Query {
 
 type Mutation {
   createProduct(name: String!): Product
-  editProduct(productId: ID!, details: Object): Product
+  updateProduct(id: ID!, input: ProductUpdateInput): Product
   createCustomer(email: String!, password: String!): Customer
 }
-
 
 type Product {
   id: ID!
@@ -39,4 +38,12 @@ type Admin {
   username: String!
   password: String!
   # TODO encryption?
+}
+
+
+input ProductUpdateInput {
+  name: String
+  desc: String
+  photo: String
+  price: String
 }
