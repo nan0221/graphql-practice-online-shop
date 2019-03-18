@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/App.css';
 import '../styles/template.css'
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import { connect } from 'react-redux';
 import { editProduct } from '../actions/editProduct'
 

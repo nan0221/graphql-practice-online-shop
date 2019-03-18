@@ -15,8 +15,6 @@ const mapDispatchToProps = dispatch => ({
   editProduct: (id) => dispatch(editProduct(id))
 })
 
-const testId = '123'
-
 class App extends Component {
   editProduct = (event) => {
     this.props.editProduct();
