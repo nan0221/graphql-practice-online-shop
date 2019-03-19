@@ -44,42 +44,13 @@ export const ADD_PRODUCT = gql`
     }
 `
 
-// const GET_PRODUCT_DETAILS = ({id}) => (
-//     <Query query={FIND_PRODUCT} variables={{id}}>
-//         {({ loading, error, data }) => {
-//             if (loading) return null
-//             if (error) return <div>{error.message}</div>
-//             const product = data.product
-//             return (
-//                 <div>
-//                     <label htmlFor="editProductId" className="m-r-10 m-t-10 display-block">ID</label>
-//                     <input type="text" name="editProductId" disabled placeholder={product.id} className="w-100pc"/>
-//                     <br />
-//                     <label htmlFor="editProductName" className="m-r-10 m-t-10 display-block">Product name</label>
-//                     <input type="text" name="editProductName" defaultValue={product.name} className="w-100pc"/>
-//                     <br />
-//                     <label htmlFor="editProductPrice" className="m-r-10 m-t-10 display-block">Price</label>
-//                     <input type="text" name="editProductPrice" defaultValue={product.price} className="w-100pc"/>
-//                     <br />
-//                     <label htmlFor="editProductPhoto" className="m-r-10 m-t-10 display-block">Image path</label>
-//                     <input type="text" name="editProductPhoto" defaultValue={product.photo} className="w-100pc"/>
-//                     <br />
-//                     <label htmlFor="editProductDesc" className="m-r-10 m-t-10 display-block">Product description</label>
-//                     <textarea name="editProductDesc" defaultValue={product.desc} className="w-100pc" rows="10"></textarea>
-//                 </div>
-//             )
-//         }}
-//     </Query>
-// )
-
-
-
 const mapStateToProps = state => ({
     state
 })
-  
+
 const mapDispatchToProps = dispatch => ({
-    closeEditModal: () => dispatch(closeEditModal())
+    closeEditModal: () => dispatch(closeEditModal()),
+    // refreshProductData: () => dispatch(refreshProductData()),
 })
 
 class Edit extends Component {
@@ -88,7 +59,37 @@ class Edit extends Component {
         return {id}
     }
 
-    GET_PRODUCT_DETAILS = ({id}) => (
+    _getNewProductData = () => {
+        if(document.getElementsByName('editProductId').length === 0) return 0
+        let id = document.getElementsByName('editProductId')[0].value
+        let name = document.getElementsByName('editProductName')[0].value
+        let price = document.getElementsByName('editProductPrice')[0].value
+        let photo = document.getElementsByName('editProductPhoto')[0].value
+        let desc = document.getElementsByName('editProductDesc')[0].value
+        let input = {
+            name: name,
+            price: price,
+            photo: photo,
+            desc: desc
+        }
+
+        let args = {
+            id: id,
+            input: input
+        }
+
+        return args
+    }
+
+    _updateProductData = (e, func) => {
+        if(!e) return 0
+        func({variables: this._getNewProductData()}).then(data => {
+            // console.log(data)
+            this.props.closeEditModal()
+        })
+    }
+
+    _getProductDetails = ({id}) => (
         <Query query={FIND_PRODUCT} variables={{id}}>
             {({ loading, error, data }) => {
                 if (loading) return null
@@ -96,53 +97,42 @@ class Edit extends Component {
                 const product = data.product
                 return (
                     <div>
-                        <label htmlFor="editProductId" className="m-r-10 m-t-10 display-block">ID</label>
-                        <input type="text" name="editProductId" disabled defaultValue={product.id} className="w-100pc"/>
-                        <br />
-                        <label htmlFor="editProductName" className="m-r-10 m-t-10 display-block">Product name</label>
-                        <input type="text" name="editProductName" defaultValue={product.name} className="w-100pc"/>
-                        <br />
-                        <label htmlFor="editProductPrice" className="m-r-10 m-t-10 display-block">Price</label>
-                        <input type="text" name="editProductPrice" defaultValue={product.price} className="w-100pc"/>
-                        <br />
-                        <label htmlFor="editProductPhoto" className="m-r-10 m-t-10 display-block">Image path</label>
-                        <input type="text" name="editProductPhoto" defaultValue={product.photo} className="w-100pc"/>
-                        <br />
-                        <label htmlFor="editProductDesc" className="m-r-10 m-t-10 display-block">Product description</label>
-                        <textarea name="editProductDesc" defaultValue={product.desc} className="w-100pc" rows="10"></textarea>
+                        <Modal.Body>
+                            <label htmlFor="editProductId" className="m-r-10 display-block">ID</label>
+                            <input type="text" name="editProductId" disabled defaultValue={product.id} className="w-100pc"/>
+                            <br />
+                            <label htmlFor="editProductName" className="m-r-10 m-t-10 display-block">Product name</label>
+                            <input type="text" name="editProductName" defaultValue={product.name} className="w-100pc"/>
+                            <br />
+                            <label htmlFor="editProductPrice" className="m-r-10 m-t-10 display-block">Price</label>
+                            <input type="text" name="editProductPrice" defaultValue={product.price} className="w-100pc"/>
+                            <br />
+                            <label htmlFor="editProductPhoto" className="m-r-10 m-t-10 display-block">Image path</label>
+                            <input type="text" name="editProductPhoto" defaultValue={product.photo} className="w-100pc"/>
+                            <br />
+                            <label htmlFor="editProductDesc" className="m-r-10 m-t-10 display-block">Product description</label>
+                            <textarea name="editProductDesc" defaultValue={product.desc} className="w-100pc" rows="10"></textarea>
+                        </Modal.Body>
+
+                        <Modal.Footer>
+                            <Mutation mutation={UPDATE_PRODUCT} onCompleted={this.props.closeEditModal}>
+                                {(updateProduct) => {
+                                    return (
+                                        <div>
+                                            <Button variant="secondary" onClick={this.props.closeEditModal} className="m-r-10">Cancel</Button>
+                                            <Button variant="primary" onClick={(e) => this._updateProductData(e, updateProduct)}>Save Changes</Button>
+                                            {/* <button onClick={updateProduct(args)}>123</button> */}
+                                        </div>
+                                    )
+                                }}
+                            </Mutation>
+                        </Modal.Footer>
                     </div>
                 )
             }}
         </Query>
     )
 
-    UPDATE_PRODUCT_DETAILS = () => {
-        console.log("111111")
-
-           let id = document.getElementsByName('editProductId')[0].value
-           let name = document.getElementsByName('editProductName')[0].value
-           let price = document.getElementsByName('editProductPrice')[0].value
-           let photo = document.getElementsByName('editProductPhoto')[0].value
-           let desc = document.getElementsByName('editProductDesc')[0].value
-           let input = {
-               name: name,
-               price: price,
-               photo: photo,
-               desc: desc
-           }
-           let args = {
-               id: id,
-               input: input
-           }
-
-       console.log("2222222")
-
-       return (
-            <Mutation mutation={UPDATE_PRODUCT} variables={args}>
-                {<div>TODO: change</div> }
-            </Mutation>
-       )
-    }
 
     render() {
         return (
@@ -152,14 +142,14 @@ class Edit extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Edit product details</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        {this.GET_PRODUCT_DETAILS(this._getQueryVariables())}
-                    </Modal.Body>
-                    <Modal.Footer>
+                    {this.props.state.editProductReducer.editModalOpen && this._getProductDetails(this._getQueryVariables())}
+                    {/* <Modal.Body>
+                        {this.props.state.editProductReducer.editModalOpen && this._getProductDetails(this._getQueryVariables())}
+                    </Modal.Body> */}
+                    {/* <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.closeEditModal}>Cancel</Button>
-                        {/* {this.UPDATE_PRODUCT_DETAILS()} */}
-                        <Button variant="primary" onClick={this.UPDATE_PRODUCT_DETAILS}>Save Changes</Button>
-                    </Modal.Footer>
+                        <Button variant="primary" onClick={this._updateProductDetails}>Save Changes</Button>
+                    </Modal.Footer> */}
                 </Modal>
 
                 {/* Add New Product */}
