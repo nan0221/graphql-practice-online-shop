@@ -32,14 +32,21 @@ export const UPDATE_PRODUCT = gql`
     }
 `
 
-export const ADD_PRODUCT = gql`
-    mutation createProduct($name: String!) {
-        createProduct(name: $name) {
-            id
+export const CREATE_PRODUCT = gql`
+    mutation createProduct($name: String, $price: String, $photo: String, $desc:String) {
+        createProduct(name: $name, price: $price, photo: $photo, desc: $desc) {
             name
             price
             desc
             photo
+        }
+    }
+`
+
+export const DELETE_PRODUCT = gql`
+    mutation deleteProduct($id: ID!) {
+        deleteProduct(id: $id) {
+            id
         }
     }
 `
@@ -54,12 +61,14 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Edit extends Component {
-    _getQueryVariables = () => {
+    // GET CURRENT PRODUCT ID FROM STORE
+    _getQueryProductId = () => {
         let id = this.props.state.editProductReducer.productId
         return {id}
     }
 
-    _getNewProductData = () => {
+    // GET UPDATED PRODUCT DATA FROM INPUTS
+    _getUpdatedProductData = () => {
         if(document.getElementsByName('editProductId').length === 0) return 0
         let id = document.getElementsByName('editProductId')[0].value
         let name = document.getElementsByName('editProductName')[0].value
@@ -81,14 +90,50 @@ class Edit extends Component {
         return args
     }
 
+    // PROCESS UPDATE_PRODUCT
     _updateProductData = (e, func) => {
-        if(!e) return 0
-        func({variables: this._getNewProductData()}).then(data => {
+        if(!e) return false
+        func({variables: this._getUpdatedProductData()}).then(data => {
             // console.log(data)
             this.props.closeEditModal()
         })
     }
 
+    // PROCESS DELETE_PRODUCT
+    _deleteProduct = (e, func) => {
+        if(!e) return false
+        func({variables: this._getQueryProductId()}).then(data => {
+            this.props.closeEditModal()
+        })
+    }
+
+    // GET NEW PRODUCT DATA FROM INPUTS
+    _getNewProductData = () => {
+        if(document.getElementsByName('addProductName').length === 0) return 0
+        let name = document.getElementsByName('addProductName')[0].value || 'New product'
+        let price = document.getElementsByName('addProductPrice')[0].value || ''
+        let photo = document.getElementsByName('addProductPhoto')[0].value || ''
+        let desc = document.getElementsByName('addProductDesc')[0].value || ''
+        let input = {
+            name: name,
+            price: price,
+            photo: "61aA+WXpHiL._SL1000_.jpg",
+            desc: desc
+        }
+        return input
+    }
+
+    // PROCESS CREATE_PRODUCT
+    _createProductData = (e, func) => {
+        if(!e) return false
+        func({variables: this._getNewProductData()}).then(data => {
+            // console.log(data)
+            // TODO: Refresh product list
+            this.props.closeEditModal()
+        })
+    }
+
+    // MODAL: EDIT EXISTING PRODUCT
     _getProductDetails = ({id}) => (
         <Query query={FIND_PRODUCT} variables={{id}}>
             {({ loading, error, data }) => {
@@ -120,6 +165,13 @@ class Edit extends Component {
                                     return (
                                         <div>
                                             <Button variant="secondary" onClick={this.props.closeEditModal} className="m-r-10">Cancel</Button>
+                                            <Mutation mutation={DELETE_PRODUCT} onCompleted={this.props.closeEditModal}>
+                                                {(deleteProduct) => {
+                                                    return (
+                                                        <Button variant="danger" onClick={(e) => this._deleteProduct(e, deleteProduct)} className="m-r-10">Delete</Button>
+                                                    )
+                                                }}
+                                            </Mutation>
                                             <Button variant="primary" onClick={(e) => this._updateProductData(e, updateProduct)}>Save Changes</Button>
                                             {/* <button onClick={updateProduct(args)}>123</button> */}
                                         </div>
@@ -133,6 +185,37 @@ class Edit extends Component {
         </Query>
     )
 
+    // MDOAL: ADD NEW PRODUCT
+    _addProduct = () => (
+        <div>
+            <Modal.Body>
+                <label htmlFor="addProductName" className="m-r-10 display-block">Product name</label>
+                <input type="text" name="addProductName" className="w-100pc"/>
+                <br />
+                <label htmlFor="addProductPrice" className="m-r-10 m-t-10 display-block">Price</label>
+                <input type="text" name="addProductPrice" className="w-100pc"/>
+                <br />
+                <label htmlFor="addProductPhoto" className="m-r-10 m-t-10 display-block">Image path</label>
+                <input type="text" name="addProductPhoto" className="w-100pc"/>
+                <br />
+                <label htmlFor="addProductDesc" className="m-r-10 m-t-10 display-block">Product description</label>
+                <textarea name="addProductDesc" className="w-100pc" rows="10"></textarea>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Mutation mutation={CREATE_PRODUCT} onCompleted={this.props.closeEditModal}>
+                    {(createProduct) => {
+                        return (
+                            <div>
+                                <Button variant="secondary" onClick={this.props.closeEditModal} className="m-r-10">Cancel</Button>
+                                <Button variant="primary" onClick={(e) => this._createProductData(e, createProduct)}>Add Product</Button>
+                            </div>
+                        )
+                    }}
+                </Mutation>
+            </Modal.Footer>
+        </div>
+    )
 
     render() {
         return (
@@ -142,28 +225,15 @@ class Edit extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Edit product details</Modal.Title>
                     </Modal.Header>
-                    {this.props.state.editProductReducer.editModalOpen && this._getProductDetails(this._getQueryVariables())}
-                    {/* <Modal.Body>
-                        {this.props.state.editProductReducer.editModalOpen && this._getProductDetails(this._getQueryVariables())}
-                    </Modal.Body> */}
-                    {/* <Modal.Footer>
-                        <Button variant="secondary" onClick={this.props.closeEditModal}>Cancel</Button>
-                        <Button variant="primary" onClick={this._updateProductDetails}>Save Changes</Button>
-                    </Modal.Footer> */}
+                    {this.props.state.editProductReducer.editModalOpen && this._getProductDetails(this._getQueryProductId())}
                 </Modal>
 
                 {/* Add New Product */}
                 <Modal show={this.props.state.editProductReducer.editModalOpen && this.props.state.editProductReducer.mode === 'add'} onHide={this.props.closeEditModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Add new product</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        ...
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.props.closeEditModal}>Cancel</Button>
-                        <Button variant="primary">Save Changes</Button>
-                    </Modal.Footer>
+                    {this.props.state.editProductReducer.editModalOpen && this._addProduct()}
                 </Modal>
             </div>
         );

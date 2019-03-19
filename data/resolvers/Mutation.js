@@ -1,19 +1,20 @@
 async function createCustomer(root, args, context) {
-    return context.prisma.createCustomer(
-        { email: args.email, password: args.password }
-    )
+    return context.prisma.createCustomer({ 
+        email: args.email, 
+        password: args.password 
+    })
 }
 
 async function createProduct(root, args, context) {
     return context.prisma.createProduct({ 
         name: args.name,
         photo: args.photo,
+        price: args.price,
         desc: args.desc
     })
 }
 
 async function updateProduct(root, args, context) {
-    // console.log("args: " + JSON.stringify(args))
     return context.prisma.updateProduct({
         where: {id: args.id},
         data: {
@@ -22,13 +23,18 @@ async function updateProduct(root, args, context) {
             photo: args.input.photo,
             desc: args.input.desc
         }
-    }
+    })
+}
 
-    )
+async function deleteProduct(root, args, context) {
+    return context.prisma.deleteProduct({ 
+        id: args.id
+    })
 }
 
 module.exports = {
     createCustomer,
     createProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 }

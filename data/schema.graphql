@@ -1,5 +1,3 @@
-scalar Object
-
 type Query {
   products: [Product!]!
   product(id: ID!): Product!
@@ -7,8 +5,9 @@ type Query {
 }
 
 type Mutation {
-  createProduct(name: String!): Product
+  createProduct(name: String, price: String, photo: String, desc:String): Product
   updateProduct(id: ID!, input: ProductUpdateInput): Product
+  deleteProduct(id: ID!): Product
   createCustomer(email: String!, password: String!): Customer
 }
 
@@ -42,6 +41,13 @@ type Admin {
 
 
 input ProductUpdateInput {
+  name: String
+  desc: String
+  photo: String
+  price: String
+}
+
+input ProductCreateInput {
   name: String
   desc: String
   photo: String
