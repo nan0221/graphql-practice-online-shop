@@ -11,6 +11,8 @@ export default (prevState = initialState, action) => {
             return action
         case 'CLOSE_LOGIN_MODAL':
             return action
+        case 'LOGIN_CUSTOMER':
+            return action
         default:
             return prevState
     }

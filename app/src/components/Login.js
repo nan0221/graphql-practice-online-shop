@@ -5,25 +5,24 @@ import { connect } from 'react-redux';
 import { closeLoginModal } from '../actions/closeLoginModal'
 import { signupMode } from '../actions/signupMode'
 import { loginMode } from '../actions/loginMode'
+import { loginCustomer } from '../actions/loginCustomer'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
 import { Query, Mutation } from 'react-apollo'
 
 export const CREATE_CUSTOMER = gql`
-    mutation createCustomer($username: String, $password: Password, $firstName: String, $lastName: String, $address: String, $phone: String) {
-        createCustomer(username: $username, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
-            id
-            username
+    mutation createCustomer($email: String, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
+        createCustomer(email: $email, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
+            email
         }
     }
 `
 export const LOGIN_CUSTOMER = gql`
-    query Customer($username: String, $password: Password) {
-        customer(where: {username: $username, password: $password}) {
-            id
-            username
-            productsByCustomer
+    query customer($email: String) {
+        customer(email: $email) {
+            email
+            password
         }
     }
 `
@@ -35,21 +34,39 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     closeLoginModal: () => dispatch(closeLoginModal()),
     signupMode: () => dispatch(signupMode()),
-    loginMode: () => dispatch(loginMode())
+    loginMode: () => dispatch(loginMode()),
+    loginCustomer: (email) => dispatch(loginCustomer(email))
 })
   
 class Login extends Component {
     _getLoginDetails = () => {
         if(document.getElementsByName('loginEmail').length === 0) return 0
         let email = document.getElementsByName('loginEmail')[0].value
-        let password = document.getElementsByName('loginPassword')[0].value
-
+        let password = document.getElementsByName('loginPassword')[0].value.toString()
         return {
             email: email,
-            password: password
+            // password: password
         }
     }
-    _login = () => {}
+
+    _login = (e) => {
+        if(!e) return false
+        return <Query query={LOGIN_CUSTOMER} variables={this._getLoginDetails()}>
+            {({ loading, error, data, variables }) => {
+                console.log(variables)
+                console.log(loading)
+                console.log(error)
+                console.log(data)
+                if (loading) return <div>{loading}</div>
+                if (error) return <div>{error.message}</div>
+                console.log(data)
+                // if(!data) return false
+                // this.props.loginCustomer(data.email)
+                return (<div>123</div>)
+            }}
+        </Query>
+    }
+
     _getSignupDetails = () => {
         if(document.getElementsByName('signupEmail').length === 0) return 0
         let email = document.getElementsByName('signupEmail')[0].value
@@ -68,7 +85,9 @@ class Login extends Component {
             phone: phone
         }
     }
+
     _signup = () => {}
+
     render() {
         return (
             <div className="Login">
@@ -90,7 +109,7 @@ class Login extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.closeLoginModal}>Cancel</Button>
-                        <Button variant="primary" onClick={this._login}>Log in</Button>
+                        <Button variant="primary" onClick={(e) => this._login(e)}>Log in</Button>
                     </Modal.Footer>
                 </Modal>
 
