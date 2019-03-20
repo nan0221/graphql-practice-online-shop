@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
 import { Query, Mutation } from 'react-apollo'
+import { ApolloConsumer } from 'react-apollo'
 
 export const CREATE_CUSTOMER = gql`
     mutation createCustomer($email: String, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
@@ -19,7 +20,7 @@ export const CREATE_CUSTOMER = gql`
     }
 `
 export const LOGIN_CUSTOMER = gql`
-    query customer($email: String) {
+    query customer($email: String!) {
         customer(email: $email) {
             email
             password
@@ -44,27 +45,28 @@ class Login extends Component {
         let email = document.getElementsByName('loginEmail')[0].value
         let password = document.getElementsByName('loginPassword')[0].value.toString()
         return {
-            email: email,
-            // password: password
+            email: email || ''
         }
     }
 
     _login = (e) => {
         if(!e) return false
-        return <Query query={LOGIN_CUSTOMER} variables={this._getLoginDetails()}>
-            {({ loading, error, data, variables }) => {
-                console.log(variables)
-                console.log(loading)
-                console.log(error)
-                console.log(data)
-                if (loading) return <div>{loading}</div>
-                if (error) return <div>{error.message}</div>
-                console.log(data)
-                // if(!data) return false
-                // this.props.loginCustomer(data.email)
-                return (<div>123</div>)
-            }}
-        </Query>
+        console.log("11111111")
+        return (
+            <Query query={LOGIN_CUSTOMER} variables={this._getLoginDetails()}>
+                {({ loading, error, data }) => {
+                    console.log(loading)
+                    console.log(error)
+                    console.log(data)
+                    if (loading) return <div>{loading}</div>
+                    if (error) return <div>{error.message}</div>
+                    console.log(data)
+                    if(!data) return false
+                    this.props.loginCustomer(data.email)
+                    return (<div>123</div>)
+                }}
+            </Query>
+        )
     }
 
     _getSignupDetails = () => {
@@ -88,6 +90,16 @@ class Login extends Component {
 
     _signup = () => {}
 
+    _validateLogin = (customer, passwordByUser) => {
+        if(!customer) return customer
+        if(!passwordByUser) return null
+        if(customer.password === passwordByUser) {
+            return customer
+        } else {
+            return null
+        }
+    }
+
     render() {
         return (
             <div className="Login">
@@ -109,7 +121,22 @@ class Login extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.closeLoginModal}>Cancel</Button>
-                        <Button variant="primary" onClick={(e) => this._login(e)}>Log in</Button>
+                        <ApolloConsumer>
+                            {client => (
+                                <Button variant="primary" 
+                                    onClick={async () => {
+                                        const vars = this._getLoginDetails()
+                                        const { data } = await client.query({
+                                        query: LOGIN_CUSTOMER,
+                                        variables: vars
+                                        });
+                                        this.props.loginCustomer(data.customer.email)
+                                    }}>
+                                    Log in
+                                </Button>
+                            )}
+                        </ApolloConsumer>
+                        
                     </Modal.Footer>
                 </Modal>
 
