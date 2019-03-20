@@ -1,7 +1,11 @@
 async function createCustomer(root, args, context) {
     return context.prisma.createCustomer({ 
         email: args.email, 
-        password: args.password 
+        password: args.password,
+        firstName: args.firstName,
+        lastName: args.lastName,
+        address: args.address,
+        phone: args.phone
     })
 }
 

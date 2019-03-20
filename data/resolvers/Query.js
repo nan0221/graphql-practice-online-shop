@@ -10,7 +10,24 @@ async function product(parent, args, context) {
     return product
 }
 
+async function customer(parent, args, context) {
+    const customer = await context.prisma.customer({
+        email: args.email
+    })
+    return _checkPassword(customer, args.password)
+}
+
+function _checkPassword(customer, passwordByUser) {
+    if(!customer) return customer
+    if(customer.password === passwordByUser) {
+        return customer
+    } else {
+        return null
+    }
+}
+
 module.exports = {
     products,
-    product
+    product,
+    customer
 }

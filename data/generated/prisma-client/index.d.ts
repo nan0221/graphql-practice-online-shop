@@ -218,8 +218,6 @@ export type ProductOrderByInput =
   | "updatedAt_DESC";
 
 export type CustomerOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
   | "email_ASC"
   | "email_DESC"
   | "firstName_ASC"
@@ -232,6 +230,8 @@ export type CustomerOrderByInput =
   | "phone_DESC"
   | "password_ASC"
   | "password_DESC"
+  | "id_ASC"
+  | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -293,8 +293,7 @@ export interface AdminWhereInput {
 }
 
 export type CustomerWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
+  email: String;
 }>;
 
 export interface ProductWhereInput {
@@ -374,20 +373,6 @@ export interface ProductWhereInput {
 }
 
 export interface CustomerWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
   email?: String;
   email_not?: String;
   email_in?: String[] | String;
@@ -472,9 +457,9 @@ export interface CustomerWhereInput {
   password_not_starts_with?: String;
   password_ends_with?: String;
   password_not_ends_with?: String;
-  productsByCustomer_every?: ProductWhereInput;
-  productsByCustomer_some?: ProductWhereInput;
-  productsByCustomer_none?: ProductWhereInput;
+  products_every?: ProductWhereInput;
+  products_some?: ProductWhereInput;
+  products_none?: ProductWhereInput;
   AND?: CustomerWhereInput[] | CustomerWhereInput;
   OR?: CustomerWhereInput[] | CustomerWhereInput;
   NOT?: CustomerWhereInput[] | CustomerWhereInput;
@@ -506,7 +491,7 @@ export interface CustomerCreateInput {
   address?: String;
   phone?: String;
   password: String;
-  productsByCustomer?: ProductCreateManyInput;
+  products?: ProductCreateManyInput;
 }
 
 export interface ProductCreateManyInput {
@@ -528,7 +513,7 @@ export interface CustomerUpdateInput {
   address?: String;
   phone?: String;
   password?: String;
-  productsByCustomer?: ProductUpdateManyInput;
+  products?: ProductUpdateManyInput;
 }
 
 export interface ProductUpdateManyInput {
@@ -813,7 +798,6 @@ export interface AggregateAdminSubscription
 }
 
 export interface Customer {
-  id: ID_Output;
   email: String;
   firstName?: String;
   lastName?: String;
@@ -823,14 +807,13 @@ export interface Customer {
 }
 
 export interface CustomerPromise extends Promise<Customer>, Fragmentable {
-  id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   address: () => Promise<String>;
   phone: () => Promise<String>;
   password: () => Promise<String>;
-  productsByCustomer: <T = FragmentableArray<Product>>(
+  products: <T = FragmentableArray<Product>>(
     args?: {
       where?: ProductWhereInput;
       orderBy?: ProductOrderByInput;
@@ -846,14 +829,13 @@ export interface CustomerPromise extends Promise<Customer>, Fragmentable {
 export interface CustomerSubscription
   extends Promise<AsyncIterator<Customer>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
   address: () => Promise<AsyncIterator<String>>;
   phone: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
-  productsByCustomer: <T = Promise<AsyncIterator<ProductSubscription>>>(
+  products: <T = Promise<AsyncIterator<ProductSubscription>>>(
     args?: {
       where?: ProductWhereInput;
       orderBy?: ProductOrderByInput;
@@ -1091,7 +1073,6 @@ export interface CustomerSubscriptionPayloadSubscription
 }
 
 export interface CustomerPreviousValues {
-  id: ID_Output;
   email: String;
   firstName?: String;
   lastName?: String;
@@ -1103,7 +1084,6 @@ export interface CustomerPreviousValues {
 export interface CustomerPreviousValuesPromise
   extends Promise<CustomerPreviousValues>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
   email: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
@@ -1115,7 +1095,6 @@ export interface CustomerPreviousValuesPromise
 export interface CustomerPreviousValuesSubscription
   extends Promise<AsyncIterator<CustomerPreviousValues>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
   email: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;

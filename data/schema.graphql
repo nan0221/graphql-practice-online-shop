@@ -1,14 +1,14 @@
 type Query {
   products: [Product!]!
   product(id: ID!): Product!
-  shoppingCart(userId: ID!): [Product!]!
+  customer(email: String!): Customer
 }
 
 type Mutation {
   createProduct(name: String, price: String, photo: String, desc:String): Product
   updateProduct(id: ID!, input: ProductUpdateInput): Product
   deleteProduct(id: ID!): Product
-  createCustomer(email: String!, password: String!): Customer
+  createCustomer(email: String!, password: String!, firstName: String, lastName: String, address: String, phone: String): Customer
 }
 
 type Product {
@@ -21,22 +21,19 @@ type Product {
 
 
 type Customer {
-  id: ID!
   email: String!
   firstName: String
   lastName: String
   address: String
   phone: String
   password: String!
-  # TODO encryption?
-  productsByCustomer: [Product!]!
+  products: [Product]
 }
 
 type Admin {
   id: ID!
   username: String!
   password: String!
-  # TODO encryption?
 }
 
 

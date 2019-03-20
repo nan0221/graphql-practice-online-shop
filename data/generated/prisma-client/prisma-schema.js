@@ -142,14 +142,13 @@ type BatchPayload {
 }
 
 type Customer {
-  id: ID!
   email: String!
   firstName: String
   lastName: String
   address: String
   phone: String
   password: String!
-  productsByCustomer(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
 }
 
 type CustomerConnection {
@@ -165,7 +164,7 @@ input CustomerCreateInput {
   address: String
   phone: String
   password: String!
-  productsByCustomer: ProductCreateManyInput
+  products: ProductCreateManyInput
 }
 
 type CustomerEdge {
@@ -174,8 +173,6 @@ type CustomerEdge {
 }
 
 enum CustomerOrderByInput {
-  id_ASC
-  id_DESC
   email_ASC
   email_DESC
   firstName_ASC
@@ -188,6 +185,8 @@ enum CustomerOrderByInput {
   phone_DESC
   password_ASC
   password_DESC
+  id_ASC
+  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -195,7 +194,6 @@ enum CustomerOrderByInput {
 }
 
 type CustomerPreviousValues {
-  id: ID!
   email: String!
   firstName: String
   lastName: String
@@ -229,7 +227,7 @@ input CustomerUpdateInput {
   address: String
   phone: String
   password: String
-  productsByCustomer: ProductUpdateManyInput
+  products: ProductUpdateManyInput
 }
 
 input CustomerUpdateManyMutationInput {
@@ -242,20 +240,6 @@ input CustomerUpdateManyMutationInput {
 }
 
 input CustomerWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
   email: String
   email_not: String
   email_in: [String!]
@@ -340,16 +324,15 @@ input CustomerWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
-  productsByCustomer_every: ProductWhereInput
-  productsByCustomer_some: ProductWhereInput
-  productsByCustomer_none: ProductWhereInput
+  products_every: ProductWhereInput
+  products_some: ProductWhereInput
+  products_none: ProductWhereInput
   AND: [CustomerWhereInput!]
   OR: [CustomerWhereInput!]
   NOT: [CustomerWhereInput!]
 }
 
 input CustomerWhereUniqueInput {
-  id: ID
   email: String
 }
 

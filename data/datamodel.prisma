@@ -8,20 +8,17 @@ type Product {
 
 
 type Customer {
-  id: ID! @unique
   email: String! @unique
   firstName: String
   lastName: String
   address: String
   phone: String
   password: String!
-  # TODO encryption?
-  productsByCustomer: [Product!]!
+  products: [Product]
 }
 
 type Admin {
   id: ID! @unique
   username: String! @unique
   password: String!
-  # TODO encryption?
 }
