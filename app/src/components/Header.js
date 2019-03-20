@@ -5,6 +5,7 @@ import { withRouter } from 'react-router'
 // import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { login } from '../actions/login'
+import { logout } from '../actions/logout'
 import { addProduct } from '../actions/addProduct'
 
 const mapStateToProps = state => ({
@@ -13,6 +14,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   login: () => dispatch(login()),
+  logout: () => dispatch(logout()),
   addProduct: () => dispatch(addProduct()),
 })
 
@@ -31,9 +33,16 @@ class Header extends Component {
                     </a>
 
                     <span className="d-flex">
-                        <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
+                      {(this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
+                        <span>
+                          <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
+                          <button type="button" className="btn btn-outline-light" onClick={this.props.logout}>Log out</button>
+                        </span>
+                      }
+
+                      {(this.props.state.loginReducer.loggedInUser === '' || this.props.state.loginReducer.loggedInUser === undefined) &&
                         <button type="button" className="btn btn-outline-light" onClick={this.props.login}>Login</button>
-                        {/* <Link to="login" className=""><button type="button" className="btn btn-outline-light">Login</button></Link> */}
+                      }
                     </span>
                 </div>
                 

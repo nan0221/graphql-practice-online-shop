@@ -1,11 +1,14 @@
 const initialState = {
     loginModalOpen: false,
-    mode: 'login'
+    mode: 'login',
+    loggedInUser: ''
 }
 
 export default (prevState = initialState, action) => {
     switch (action.type) {
         case 'LOGIN':
+            return action
+        case 'LOGOUT':
             return action
         case 'SIGNUP':
             return action

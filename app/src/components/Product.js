@@ -29,7 +29,9 @@ class Product extends Component {
                 <div className="d-flex justify-content-between align-items-center m-t-10">
                     <div className="btn-group">
                     <button type="button" className="btn btn-sm btn-outline-secondary">Add to cart</button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => this.props.editProduct(this.props.id)}>Edit</button>
+                    {(this.props.state.loginReducer.loggedInUser !== '') && 
+                      <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => this.props.editProduct(this.props.id)}>Edit</button>
+                    }
                     </div>
                     <small className="text-muted">${this.props.price}.00</small>
                 </div>

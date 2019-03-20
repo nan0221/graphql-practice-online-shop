@@ -49,26 +49,6 @@ class Login extends Component {
         }
     }
 
-    _login = (e) => {
-        if(!e) return false
-        console.log("11111111")
-        return (
-            <Query query={LOGIN_CUSTOMER} variables={this._getLoginDetails()}>
-                {({ loading, error, data }) => {
-                    console.log(loading)
-                    console.log(error)
-                    console.log(data)
-                    if (loading) return <div>{loading}</div>
-                    if (error) return <div>{error.message}</div>
-                    console.log(data)
-                    if(!data) return false
-                    this.props.loginCustomer(data.email)
-                    return (<div>123</div>)
-                }}
-            </Query>
-        )
-    }
-
     _getSignupDetails = () => {
         if(document.getElementsByName('signupEmail').length === 0) return 0
         let email = document.getElementsByName('signupEmail')[0].value
@@ -127,10 +107,15 @@ class Login extends Component {
                                     onClick={async () => {
                                         const vars = this._getLoginDetails()
                                         const { data } = await client.query({
-                                        query: LOGIN_CUSTOMER,
-                                        variables: vars
+                                            query: LOGIN_CUSTOMER,
+                                            variables: this._getLoginDetails()
                                         });
-                                        this.props.loginCustomer(data.customer.email)
+                                        let password = document.getElementsByName('loginPassword')[0].value.toString()
+                                        if(data.customer.password === password) {
+                                            this.props.loginCustomer(data.customer.email)
+                                        } else {
+                                            this.props.loginCustomer('')
+                                        }
                                     }}>
                                     Log in
                                 </Button>
