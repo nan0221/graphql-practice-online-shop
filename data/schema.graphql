@@ -11,6 +11,11 @@ type Mutation {
   createCustomer(email: String!, password: String!, firstName: String, lastName: String, address: String, phone: String): Customer
 }
 
+type Subscription {
+  productCreated: Product
+  productDeleted: Product
+}
+
 type Product {
   id: ID!
   name: String
