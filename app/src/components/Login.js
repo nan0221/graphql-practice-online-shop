@@ -111,7 +111,7 @@ class Login extends Component {
                                             variables: this._getLoginDetails()
                                         });
                                         let password = document.getElementsByName('loginPassword')[0].value.toString()
-                                        if(data.customer.password === password) {
+                                        if(data.customer !== null && data.customer.password === password) {
                                             this.props.loginCustomer(data.customer.email)
                                         } else {
                                             this.props.loginCustomer('')
