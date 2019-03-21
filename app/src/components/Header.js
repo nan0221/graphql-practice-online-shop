@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import '../styles/App.css';
 import '../styles/template.css'
 import { withRouter } from 'react-router'
-// import { Link } from 'react-router-dom'
+
 import { connect } from 'react-redux';
 import { login } from '../actions/login'
 import { logout } from '../actions/logout'
+import { openShoppingCart } from '../actions/openShoppingCart'
 import { addProduct } from '../actions/addProduct'
 
 const mapStateToProps = state => ({
@@ -15,6 +16,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   login: () => dispatch(login()),
   logout: () => dispatch(logout()),
+  openShoppingCart: () => dispatch(openShoppingCart()),
   addProduct: () => dispatch(addProduct()),
 })
 
@@ -37,6 +39,7 @@ class Header extends Component {
                         <span>
                           <span className="text-white m-r-10">Welcome, {this.props.state.loginReducer.loggedInUser}</span>
                           <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
+                          <button type="button" className="btn btn-outline-warning m-r-10" onClick={this.props.openShoppingCart}>Shopping cart</button>
                           <button type="button" className="btn btn-outline-light" onClick={this.props.logout}>Log out</button>
                         </span>
                       }

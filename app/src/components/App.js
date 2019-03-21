@@ -6,6 +6,7 @@ import Login from './Login'
 import Edit from './Edit'
 import { connect } from 'react-redux';
 import { editProduct } from '../actions/editProduct'
+import ShoppingCart from './ShoppingCart';
 
 const mapStateToProps = state => ({
   state
@@ -29,6 +30,7 @@ class App extends Component {
         </pre>
         <Login />
         <Edit />
+        <ShoppingCart />
         <Switch>
           <Route exact path="/" component={Home} />
         </Switch>
