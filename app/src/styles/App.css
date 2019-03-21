@@ -78,3 +78,7 @@ ul li {
 .h-auto {
   height: auto
 }
+
+.text-white {
+  color: #ffffff;
+}

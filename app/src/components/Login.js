@@ -9,7 +9,7 @@ import { loginCustomer } from '../actions/loginCustomer'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
-import { ApolloConsumer } from 'react-apollo'
+import { ApolloConsumer, Mutation } from 'react-apollo'
 
 export const CREATE_CUSTOMER = gql`
     mutation createCustomer($email: String, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
@@ -21,6 +21,15 @@ export const CREATE_CUSTOMER = gql`
 export const LOGIN_CUSTOMER = gql`
     query customer($email: String!) {
         customer(email: $email) {
+            email
+            password
+        }
+    }
+`
+
+export const SIGNUP_CUSTOMER = gql`
+    mutation createCustomer($email: String!, $password: String!, $firstName: String, $lastName: String, $address: String, $phone: String) {
+        createCustomer(email: $email, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
             email
             password
         }
@@ -67,7 +76,13 @@ class Login extends Component {
         }
     }
 
-    _signup = () => {}
+    _createCustomerData = (e, func) => {
+        if(!e) return false
+        func({variables: this._getSignupDetails()}).then(data => {
+            console.log(data.data)
+            this.props.loginCustomer(data.data.createCustomer.email)
+        })
+    }
 
     _validateLogin = (customer, passwordByUser) => {
         if(!customer) return customer
@@ -129,8 +144,8 @@ class Login extends Component {
                         <Modal.Title>Sign up</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <label htmlFor="singupEmail" className="m-r-10 display-block">Username</label>
-                        <input type="text" name="singupEmail" placeholder="name@example.com" className="w-100pc"/>
+                        <label htmlFor="signupEmail" className="m-r-10 display-block">Username</label>
+                        <input type="text" name="signupEmail" placeholder="name@example.com" className="w-100pc"/>
                         <br />
                         <label htmlFor="signupPassword" className="m-r-10 m-t-10 display-block">Password</label>
                         <input type="password" name="signupPassword" className="w-100pc"/>
@@ -152,8 +167,18 @@ class Login extends Component {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.props.closeLoginModal}>Cancel</Button>
-                        <Button variant="primary" onClick={this._signup}>Submit</Button>
+                        {/* <Button variant="secondary" onClick={this.props.closeLoginModal}>Cancel</Button>
+                        <Button variant="primary" onClick={this._signup()}>Submit</Button> */}
+                        <Mutation mutation={SIGNUP_CUSTOMER} onCompleted={this.props.closeEditModal}>
+                            {(createCustomer) => {
+                                return (
+                                    <div>
+                                        <Button variant="secondary" onClick={this.props.closeEditModal} className="m-r-10">Cancel</Button>
+                                        <Button variant="primary" onClick={(e) => this._createCustomerData(e, createCustomer)}>Sign up</Button>
+                                    </div>
+                                )
+                            }}
+                        </Mutation>
                     </Modal.Footer>
                 </Modal>
             </div>

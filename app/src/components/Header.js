@@ -35,6 +35,7 @@ class Header extends Component {
                     <span className="d-flex">
                       {(this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
                         <span>
+                          <span className="text-white m-r-10">Welcome, {this.props.state.loginReducer.loggedInUser}</span>
                           <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
                           <button type="button" className="btn btn-outline-light" onClick={this.props.logout}>Log out</button>
                         </span>

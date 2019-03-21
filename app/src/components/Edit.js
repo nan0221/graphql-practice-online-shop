@@ -128,7 +128,6 @@ class Edit extends Component {
         if(!e) return false
         func({variables: this._getNewProductData()}).then(data => {
             // console.log(data)
-            // TODO: Refresh product list
             this.props.closeEditModal()
         })
     }
