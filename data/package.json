@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apollo-link-ws": "^1.0.17",
     "graphql-yoga": "^1.17.4",
-    "prisma-client-lib": "^1.28.1"
+    "prisma-client-lib": "^1.28.1",
+    "subscriptions-transport-ws": "^0.9.16"
   }
 }
