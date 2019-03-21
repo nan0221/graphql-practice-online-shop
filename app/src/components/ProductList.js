@@ -49,6 +49,8 @@ class ProductList extends Component {
         this.state = {
             products: {}
         }
+        this._subscribeProductUpdated = this._subscribeProductUpdated.bind(this)
+        this._subscribeProductDeleted = this._subscribeProductDeleted.bind(this)
     }
 
     _subscribeProductUpdated = subscribeToMore => {

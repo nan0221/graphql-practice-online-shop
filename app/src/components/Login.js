@@ -9,7 +9,6 @@ import { loginCustomer } from '../actions/loginCustomer'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
-import { Query, Mutation } from 'react-apollo'
 import { ApolloConsumer } from 'react-apollo'
 
 export const CREATE_CUSTOMER = gql`
@@ -105,7 +104,6 @@ class Login extends Component {
                             {client => (
                                 <Button variant="primary" 
                                     onClick={async () => {
-                                        const vars = this._getLoginDetails()
                                         const { data } = await client.query({
                                             query: LOGIN_CUSTOMER,
                                             variables: this._getLoginDetails()
