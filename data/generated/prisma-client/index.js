@@ -13,7 +13,7 @@ var models = [
     embedded: false
   },
   {
-    name: "Admin",
+    name: "Role",
     embedded: false
   }
 ];

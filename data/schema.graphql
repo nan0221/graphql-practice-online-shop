@@ -9,6 +9,7 @@ type Mutation {
   updateProduct(id: ID!, input: ProductUpdateInput): Product
   deleteProduct(id: ID!): Product
   createCustomer(email: String!, password: String!, firstName: String, lastName: String, address: String, phone: String): Customer
+  updateCustomer(data: CustomerUpdateInput!, email: String!): Customer
 }
 
 type Subscription {
@@ -32,15 +33,9 @@ type Customer {
   address: String
   phone: String
   password: String!
-  products: [Product]
+  products: String
+  role: Role
 }
-
-type Admin {
-  id: ID!
-  username: String!
-  password: String!
-}
-
 
 input ProductUpdateInput {
   name: String
@@ -54,4 +49,33 @@ input ProductCreateInput {
   desc: String
   photo: String
   price: String
+}
+
+input CustomerWhereUniqueInput {
+  email: String
+}
+
+input CustomerUpdateInput {
+  email: String
+  firstName: String
+  lastName: String
+  address: String
+  phone: String
+  password: String
+  products: String
+  role: Role
+}
+
+input ProductUpdateManyInput {
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ProductWhereUniqueInput {
+  id: ID
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
 }

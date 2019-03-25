@@ -14,11 +14,11 @@ type Customer {
   address: String
   phone: String
   password: String!
-  products: [Product]
+  role: Role @default(value: "CUSTOMER")
+  products: String
 }
 
-type Admin {
-  id: ID! @unique
-  username: String! @unique
-  password: String!
+enum Role {
+  CUSTOMER
+  ADMIN
 }

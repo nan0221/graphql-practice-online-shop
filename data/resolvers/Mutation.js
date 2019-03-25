@@ -9,6 +9,16 @@ async function createCustomer(root, args, context) {
     })
 }
 
+async function updateCustomer(root, args, context) {
+    // only for addToShoppingCart function
+    return context.prisma.updateCustomer({ 
+        where: { email: args.email },
+        data: {
+            products: args.data.products
+        }
+    })
+}
+
 async function createProduct(root, args, context) {
     return context.prisma.createProduct({ 
         name: args.name,
@@ -38,6 +48,7 @@ async function deleteProduct(root, args, context) {
 
 module.exports = {
     createCustomer,
+    updateCustomer,
     createProduct,
     updateProduct,
     deleteProduct
