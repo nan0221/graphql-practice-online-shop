@@ -6,23 +6,20 @@ import { closeLoginModal } from '../actions/closeLoginModal'
 import { signupMode } from '../actions/signupMode'
 import { loginMode } from '../actions/loginMode'
 import { loginCustomer } from '../actions/loginCustomer'
+import { setShoppingCart } from '../actions/setShoppingCart'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
 import { ApolloConsumer, Mutation } from 'react-apollo'
 
-export const CREATE_CUSTOMER = gql`
-    mutation createCustomer($email: String, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
-        createCustomer(email: $email, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
-            email
-        }
-    }
-`
+
 export const LOGIN_CUSTOMER = gql`
     query customer($email: String!) {
         customer(email: $email) {
             email
             password
+            products
+            role
         }
     }
 `
@@ -44,7 +41,8 @@ const mapDispatchToProps = dispatch => ({
     closeLoginModal: () => dispatch(closeLoginModal()),
     signupMode: () => dispatch(signupMode()),
     loginMode: () => dispatch(loginMode()),
-    loginCustomer: (email) => dispatch(loginCustomer(email))
+    loginCustomer: (email, role) => dispatch(loginCustomer(email, role)),
+    setShoppingCart: (products) => dispatch(setShoppingCart(products))
 })
   
 class Login extends Component {
@@ -84,15 +82,15 @@ class Login extends Component {
         })
     }
 
-    _validateLogin = (customer, passwordByUser) => {
-        if(!customer) return customer
-        if(!passwordByUser) return null
-        if(customer.password === passwordByUser) {
-            return customer
-        } else {
-            return null
-        }
-    }
+    // _validateLogin = (customer, passwordByUser) => {
+    //     if(!customer) return customer
+    //     if(!passwordByUser) return null
+    //     if(customer.password === passwordByUser) {
+    //         return customer
+    //     } else {
+    //         return null
+    //     }
+    // }
 
     render() {
         return (
@@ -125,7 +123,8 @@ class Login extends Component {
                                         });
                                         let password = document.getElementsByName('loginPassword')[0].value.toString()
                                         if(data.customer !== null && data.customer.password === password) {
-                                            this.props.loginCustomer(data.customer.email)
+                                            this.props.loginCustomer(data.customer.email, data.customer.role)
+                                            this.props.setShoppingCart(data.customer.products)
                                         } else {
                                             this.props.loginCustomer('')
                                         }
