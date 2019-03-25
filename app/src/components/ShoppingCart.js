@@ -28,7 +28,7 @@ class ShoppingCart extends Component {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
-                <Button variant="primary" onClick={this.props.closeShoppingCart}>Checkout</Button>
+                <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
             </Modal.Footer>
         </Modal>
 
