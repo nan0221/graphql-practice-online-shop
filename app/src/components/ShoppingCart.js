@@ -70,7 +70,7 @@ class ShoppingCart extends Component {
                     <Modal.Title>View shopping cart</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    { this.props.state.shoppingCartReducer.products !== '' &&
+                    { (this.props.state.shoppingCartReducer.products !== '' && this.props.state.shoppingCartReducer.products !== null) &&
                         <ApolloConsumer>
                             {client => (
                                 <ul>
@@ -87,7 +87,7 @@ class ShoppingCart extends Component {
                             )}
                         </ApolloConsumer>
                     }
-                    { this.props.state.shoppingCartReducer.products === '' &&
+                    { (this.props.state.shoppingCartReducer.products === '' || this.props.state.shoppingCartReducer.products === null) &&
                         <div>Products added to your shopping cart will be displayed here.</div>
                     }
                 </Modal.Body>
