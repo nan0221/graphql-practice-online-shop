@@ -82,3 +82,16 @@ ul li {
 .text-white {
   color: #ffffff;
 }
+
+ul {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0
+}
+
+ul li {
+  margin: 1em 1em;
+  padding: 0 0 0 0;
+  text-decoration: none;
+  text-indent: 0%;
+  list-style: none;
+}

@@ -96,7 +96,8 @@ class Login extends Component {
         return (
             <div className="Login">
                 <Modal show={this.props.state.loginReducer.loginModalOpen && this.props.state.loginReducer.mode === 'login'} 
-                    onHide={this.props.closeLoginModal}>
+                    onHide={this.props.closeLoginModal}
+                    backdrop="static">
                     <Modal.Header closeButton>
                         <Modal.Title>Log in</Modal.Title>
                     </Modal.Header>
