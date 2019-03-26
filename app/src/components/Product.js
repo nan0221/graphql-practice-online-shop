@@ -29,8 +29,8 @@ const mapDispatchToProps = dispatch => ({
 
 class Product extends Component {
   editProduct = (event) => {
-    this.props.editProduct(this.props.id);
-  }  
+    this.props.editProduct(this.props.id)
+  }
 
   _addToCart = (e, func) => {
     if(!e) return false
@@ -53,8 +53,8 @@ class Product extends Component {
           products: products
         }
       }}).then(data => {
-        console.log(data)
-        // this.props.setShoppingCart(products)
+        // TODO: use subscription method instead
+        this.props.setShoppingCart(data.data.updateCustomer.products)
     })
     }
   }
