@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
 import { ApolloConsumer, Mutation } from 'react-apollo'
+import Auth from './Auth'
 
 
 export const LOGIN_CUSTOMER = gql`
@@ -32,6 +33,9 @@ export const SIGNUP_CUSTOMER = gql`
         }
     }
 `
+
+const auth = new Auth();
+auth.login();
 
 const mapStateToProps = state => ({
     state
