@@ -10,7 +10,7 @@ class Footer extends Component {
             <p className="float-right">
                 <a href="#">Back to top</a>
             </p>
-            <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+            <p>The website is customised based on the &copy; Bootstrap Album example.</p>
             </div>
 
             <div>Icons made by 
