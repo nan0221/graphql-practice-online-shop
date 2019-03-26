@@ -9,12 +9,13 @@ type Mutation {
   updateProduct(id: ID!, input: ProductUpdateInput): Product
   deleteProduct(id: ID!): Product
   createCustomer(email: String!, password: String!, firstName: String, lastName: String, address: String, phone: String): Customer
-  updateCustomer(data: CustomerUpdateInput!, email: String!): Customer
+  updateCustomer(data: CustomerUpdateInput, email: String!): Customer
 }
 
 type Subscription {
   productCreated: Product
   productDeleted: Product
+  customerUpdated: Customer
 }
 
 type Product {
@@ -62,8 +63,8 @@ input CustomerUpdateInput {
   address: String
   phone: String
   password: String
-  products: String
   role: Role
+  products: String
 }
 
 input ProductUpdateManyInput {

@@ -5,6 +5,10 @@ function productCreatedSubscribe(parent, args, context, info) {
 function productDeletedSubscribe(parent, args, context, info) {
     return context.prisma.$subscribe.product({ mutation_in: ['DELETED'] }).node()
 }
+
+function customerUpdatedSubscribe(parent, args, context, info) {
+    return context.prisma.$subscribe.customer({ mutation_in: ['UPDATED'] }).node()
+}
   
 const productCreated = {
     subscribe: productCreatedSubscribe,
@@ -20,7 +24,15 @@ const productDeleted = {
     },
 }
 
+const customerUpdated = {
+    subscribe: customerUpdatedSubscribe,
+    resolve: payload => {
+        return payload
+    },
+}
+
 module.exports = {
     productCreated,
-    productDeleted
+    productDeleted,
+    customerUpdated
 }
