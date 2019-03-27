@@ -39,7 +39,7 @@ class App extends Component {
             JSON.stringify(this.props, null, 4)
           }
         </pre>
-        <Login />
+        <Login auth={auth} />
         <Edit />
         <ShoppingCart />
         {/* <Switch>

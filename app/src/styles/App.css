@@ -58,15 +58,6 @@
   border-bottom-style: solid;
 }
 
-ul {
-  text-align: left;
-  font-size: 9pt;
-}
-
-ul li {
-  text-indent: 0%
-}
-
 .display-block {
   display: block
 }
@@ -84,6 +75,8 @@ ul li {
 }
 
 ul {
+  text-align: left;
+  font-size: 9pt;
   margin: 0 0 0 0;
   padding: 0 0 0 0
 }
@@ -94,4 +87,8 @@ ul li {
   text-decoration: none;
   text-indent: 0%;
   list-style: none;
+}
+
+.text-left {
+  text-align: left
 }

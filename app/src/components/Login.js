@@ -45,6 +45,15 @@ const mapDispatchToProps = dispatch => ({
 })
   
 class Login extends Component {
+    constructor(props){
+        super(props)
+        this.login = this.login.bind(this)
+    }
+
+    login() {
+        this.props.auth.login();
+    }
+
     _getLoginDetails = () => {
         if(document.getElementsByName('loginEmail').length === 0) return 0
         let email = document.getElementsByName('loginEmail')[0].value
@@ -96,6 +105,8 @@ class Login extends Component {
                         <br />
                         <label htmlFor="loginPassword" className="m-r-10 m-t-10 display-block">Password</label>
                         <input type="password" name="loginPassword" className="w-100pc"/>
+                        <br />
+                        <button type="button" className="btn btn-light m-t-10" onClick={this.login.bind(this)}>Auth0 Log in</button>
                         <br />
                         <div className="m-t-10">
                             Do not have an account? <Button variant="info" onClick={this.props.signupMode}>Sign up</Button>

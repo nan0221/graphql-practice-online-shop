@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
 import '../styles/template.css'
 import Header from './Header'
 import Footer from './Footer'
@@ -13,18 +13,14 @@ class Home extends Component {
 
     return (
         <div className="Home">
-            {/* LOCAL LOGIN */}
-            {/* <Header auth={this.props.auth} mode="local"/> */}
-
-            {/* AUTH0 LOGIN */}
-            <Header auth={this.props.auth} isAuth={isAuthenticated()} mode="auth0"/>
+            <Header auth={this.props.auth} isAuth={isAuthenticated()}/>
 
             {/* TEST ONLY */}
-            {/* {
+            {
               isAuthenticated() && (
                 <Profile auth={this.props.auth}/>
                 )
-            } */}
+            }
             <main role="main">
                 <Promotion />
                 <ProductList />
@@ -35,4 +31,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Home

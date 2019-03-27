@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
 import '../styles/template.css'
 import { withRouter } from 'react-router'
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { login } from '../actions/login'
 import { logout } from '../actions/logout'
 import { openShoppingCart } from '../actions/openShoppingCart'
@@ -62,7 +62,7 @@ class Header extends Component {
 
                     <span className="d-flex">
                       {/* LOCAL LOGIN */}
-                      {(this.props.mode === 'local' && !isAuthenticated() && this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
+                      {(!isAuthenticated() && this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
                         <span>
                           <span className="text-white m-r-10">Welcome, {this.props.state.loginReducer.loggedInUser}</span>
                           {this.props.state.loginReducer.isAdmin && 
@@ -73,18 +73,13 @@ class Header extends Component {
                         </span>
                       }
 
-                      {(this.props.mode === 'local' && !isAuthenticated() && this.props.state.loginReducer.loggedInUser === '' || this.props.state.loginReducer.loggedInUser === undefined) &&
+                      {(!isAuthenticated() && (this.props.state.loginReducer.loggedInUser === '' || this.props.state.loginReducer.loggedInUser === undefined)) &&
                         <button type="button" className="btn btn-outline-light" onClick={this.props.login}>Login</button>
                       }
 
                       {/* AUTH0 LOGIN */}
-                      {(this.props.mode === 'auth0' && !isAuthenticated()) && (
-                          <button type="button" className="btn btn-outline-light" onClick={this.login.bind(this)}>Login</button>
-                        )
-                      }
-
                       {isAuthenticated() && (
-                          <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Log out</button>
+                          <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Auth0 Log out</button>
                         )
                       }
                     </span>
