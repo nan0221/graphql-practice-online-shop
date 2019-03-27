@@ -5,7 +5,8 @@ async function createCustomer(root, args, context) {
         firstName: args.firstName,
         lastName: args.lastName,
         address: args.address,
-        phone: args.phone
+        phone: args.phone,
+        products: ''
     })
 }
 

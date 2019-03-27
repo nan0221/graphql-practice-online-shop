@@ -388,7 +388,7 @@ export interface CustomerCreateInput {
   lastName?: String;
   address?: String;
   phone?: String;
-  password: String;
+  password?: String;
   role?: Role;
   products?: String;
 }
@@ -468,7 +468,7 @@ export interface Customer {
   lastName?: String;
   address?: String;
   phone?: String;
-  password: String;
+  password?: String;
   role?: Role;
   products?: String;
 }
@@ -703,7 +703,7 @@ export interface CustomerPreviousValues {
   lastName?: String;
   address?: String;
   phone?: String;
-  password: String;
+  password?: String;
   role?: Role;
   products?: String;
 }

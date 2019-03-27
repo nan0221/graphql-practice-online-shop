@@ -8,7 +8,7 @@ type Mutation {
   createProduct(name: String, price: String, photo: String, desc:String): Product
   updateProduct(id: ID!, input: ProductUpdateInput): Product
   deleteProduct(id: ID!): Product
-  createCustomer(email: String!, password: String!, firstName: String, lastName: String, address: String, phone: String): Customer
+  createCustomer(email: String!, password: String, firstName: String, lastName: String, address: String, phone: String, product: String): Customer
   updateCustomer(data: CustomerUpdateInput, email: String!): Customer
 }
 
@@ -33,7 +33,7 @@ type Customer {
   lastName: String
   address: String
   phone: String
-  password: String!
+  password: String
   products: String
   role: Role
 }

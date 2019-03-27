@@ -13,7 +13,7 @@ type Customer {
   lastName: String
   address: String
   phone: String
-  password: String!
+  password: String
   role: Role @default(value: "CUSTOMER")
   products: String
 }

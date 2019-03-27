@@ -21,7 +21,7 @@ type Customer {
   lastName: String
   address: String
   phone: String
-  password: String!
+  password: String
   role: Role
   products: String
 }
@@ -38,7 +38,7 @@ input CustomerCreateInput {
   lastName: String
   address: String
   phone: String
-  password: String!
+  password: String
   role: Role
   products: String
 }
@@ -79,7 +79,7 @@ type CustomerPreviousValues {
   lastName: String
   address: String
   phone: String
-  password: String!
+  password: String
   role: Role
   products: String
 }
