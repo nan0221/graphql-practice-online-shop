@@ -6,6 +6,7 @@ export default class Auth {
   idToken;
   expiresAt;
   userProfile;
+  tokenRenewalTimeout;
 
   auth0 = new auth0.WebAuth({
     domain: 'nan0221.au.auth0.com',
@@ -24,6 +25,7 @@ export default class Auth {
     this.getIdToken = this.getIdToken.bind(this);
     this.renewSession = this.renewSession.bind(this);
     this.getProfile = this.getProfile.bind(this);
+    this.scheduleRenewal = this.scheduleRenewal.bind(this);
   }
 
   login() {
@@ -60,6 +62,9 @@ export default class Auth {
     this.idToken = authResult.idToken;
     this.expiresAt = expiresAt;
 
+    // schedule a token renewal
+    this.scheduleRenewal();
+
     // navigate to the home route
     history.replace('/');
   }
@@ -74,6 +79,20 @@ export default class Auth {
          alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
        }
     });
+  }
+
+  scheduleRenewal() {
+    let expiresAt = this.expiresAt;
+    const timeout = expiresAt - Date.now();
+    if (timeout > 0) {
+      this.tokenRenewalTimeout = setTimeout(() => {
+        this.renewSession();
+      }, timeout);
+    }
+  }
+
+  getExpiryDate() {
+    return JSON.stringify(new Date(this.expiresAt));
   }
 
   getProfile(cb) {
@@ -96,6 +115,9 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
+
+    // Clear token renewal
+    clearTimeout(this.tokenRenewalTimeout);
 
     // navigate to the home route
     history.replace('/');

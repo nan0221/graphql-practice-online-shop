@@ -34,7 +34,9 @@ class Header extends Component {
   }
 
   logout() {
-    this.props.auth.logout();
+    // log out of auth0
+    let returnTo = "http://localhost:3000/v2/logout"
+    this.props.auth.logout({returnTo});
   }
 
   componentDidMount() {
