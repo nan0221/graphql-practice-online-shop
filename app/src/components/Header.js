@@ -21,7 +21,33 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Header extends Component {
+  constructor(props){
+    super(props)
+  }
+
+  goTo(route) {
+    this.props.history.replace(`/${route}`)
+  }
+
+  login() {
+    this.props.auth.login();
+  }
+
+  logout() {
+    this.props.auth.logout();
+  }
+
+  componentDidMount() {
+    const { renewSession } = this.props.auth;
+
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      renewSession();
+    }
+  }
+
   render() {
+    const { isAuthenticated } = this.props.auth
+
     return (
         <header>
             <div className="navbar navbar-dark bg-dark shadow-sm">
@@ -35,7 +61,8 @@ class Header extends Component {
                     </a>
 
                     <span className="d-flex">
-                      {(this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
+                      {/* LOCAL LOGIN */}
+                      {(this.props.mode === 'local' && !isAuthenticated() && this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
                         <span>
                           <span className="text-white m-r-10">Welcome, {this.props.state.loginReducer.loggedInUser}</span>
                           {this.props.state.loginReducer.isAdmin && 
@@ -46,8 +73,19 @@ class Header extends Component {
                         </span>
                       }
 
-                      {(this.props.state.loginReducer.loggedInUser === '' || this.props.state.loginReducer.loggedInUser === undefined) &&
+                      {(this.props.mode === 'local' && !isAuthenticated() && this.props.state.loginReducer.loggedInUser === '' || this.props.state.loginReducer.loggedInUser === undefined) &&
                         <button type="button" className="btn btn-outline-light" onClick={this.props.login}>Login</button>
+                      }
+
+                      {/* AUTH0 LOGIN */}
+                      {(this.props.mode === 'auth0' && !isAuthenticated()) && (
+                          <button type="button" className="btn btn-outline-light" onClick={this.login.bind(this)}>Login</button>
+                        )
+                      }
+
+                      {isAuthenticated() && (
+                          <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Log out</button>
+                        )
                       }
                     </span>
                 </div>

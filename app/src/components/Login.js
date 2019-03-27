@@ -11,8 +11,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import gql from 'graphql-tag'
 import { ApolloConsumer, Mutation } from 'react-apollo'
-import Auth from './Auth'
-
 
 export const LOGIN_CUSTOMER = gql`
     query customer($email: String!) {
@@ -33,9 +31,6 @@ export const SIGNUP_CUSTOMER = gql`
         }
     }
 `
-
-const auth = new Auth();
-auth.login();
 
 const mapStateToProps = state => ({
     state
@@ -85,16 +80,6 @@ class Login extends Component {
             this.props.loginCustomer(data.data.createCustomer.email)
         })
     }
-
-    // _validateLogin = (customer, passwordByUser) => {
-    //     if(!customer) return customer
-    //     if(!passwordByUser) return null
-    //     if(customer.password === passwordByUser) {
-    //         return customer
-    //     } else {
-    //         return null
-    //     }
-    // }
 
     render() {
         return (
