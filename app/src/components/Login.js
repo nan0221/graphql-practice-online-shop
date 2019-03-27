@@ -24,7 +24,7 @@ export const LOGIN_CUSTOMER = gql`
 `
 
 export const SIGNUP_CUSTOMER = gql`
-    mutation createCustomer($email: String!, $password: String!, $firstName: String, $lastName: String, $address: String, $phone: String) {
+    mutation createCustomer($email: String!, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
         createCustomer(email: $email, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
             email
             password
@@ -106,14 +106,15 @@ class Login extends Component {
                         <label htmlFor="loginPassword" className="m-r-10 m-t-10 display-block">Password</label>
                         <input type="password" name="loginPassword" className="w-100pc"/>
                         <br />
-                        <button type="button" className="btn btn-light m-t-10" onClick={this.login.bind(this)}>Auth0 Log in</button>
-                        <br />
                         <div className="m-t-10">
                             Do not have an account? <Button variant="info" onClick={this.props.signupMode}>Sign up</Button>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.closeLoginModal}>Cancel</Button>
+                        <button type="button" className="btn btn-dark m-r-10" onClick={this.login.bind(this)}>
+                            <img src={require('../img/auth0-logo.png')} width="60" height="auto" className="m-r-3" alt="Auth0 "/> Log in
+                        </button>
                         <ApolloConsumer>
                             {client => (
                                 <Button variant="primary" 
@@ -123,7 +124,7 @@ class Login extends Component {
                                             variables: this._getLoginDetails()
                                         });
                                         let password = document.getElementsByName('loginPassword')[0].value.toString()
-                                        if(data.customer !== null && data.customer.password === password) {
+                                        if(data.customer !== null && data.customer.password !== null && data.customer.password === password) {
                                             this.props.loginCustomer(data.customer.email, data.customer.role)
                                             this.props.setShoppingCart(data.customer.products)
                                         } else {

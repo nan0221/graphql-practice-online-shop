@@ -5,7 +5,7 @@ import Header from './Header'
 import Footer from './Footer'
 import Promotion from './Promotion'
 import ProductList from './ProductList'
-import Profile from './Profile'
+import Auth0Login from './Auth0Login'
 
 class Home extends Component {
   render() {
@@ -13,14 +13,10 @@ class Home extends Component {
 
     return (
         <div className="Home">
+            { isAuthenticated() && (
+                <Auth0Login auth={this.props.auth}/>
+            )}
             <Header auth={this.props.auth} isAuth={isAuthenticated()}/>
-
-            {/* TEST ONLY */}
-            {
-              isAuthenticated() && (
-                <Profile auth={this.props.auth}/>
-                )
-            }
             <main role="main">
                 <Promotion />
                 <ProductList />

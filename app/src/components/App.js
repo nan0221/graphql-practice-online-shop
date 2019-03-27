@@ -34,7 +34,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <pre>
+        <pre className="text-left">
           {
             JSON.stringify(this.props, null, 4)
           }
