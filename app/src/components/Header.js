@@ -34,10 +34,13 @@ class Header extends Component {
   }
 
   logout() {
-    // log out of auth0
-    let returnTo = "http://localhost:3000/v2/logout"
-    this.props.auth.logout({returnTo});
+    // clear data in localStorage
+    this.props.auth.logout();
+    // update store
     this.props.logout()
+    // log out of auth0
+    const logoutLink = "https://nan0221.au.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3000/"
+    window.open(logoutLink)
   }
 
   componentDidMount() {
