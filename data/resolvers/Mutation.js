@@ -1,3 +1,8 @@
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const { APP_SECRET, getUserId } = require('../utils')
+
+
 async function createCustomer(root, args, context) {
     return context.prisma.createCustomer({ 
         email: args.email, 
@@ -47,10 +52,42 @@ async function deleteProduct(root, args, context) {
     })
 }
 
+async function signup(parent, args, context) {
+    const password = await bcrypt.hash(args.password, 10)
+    const customer = await context.prisma.createCustomer({ ...args, password })
+  
+    const token = jwt.sign({ customerEmail: customer.email }, APP_SECRET)
+  
+    return {
+      token,
+      customer,
+    }
+  }
+  
+  async function login(parent, args, context) {
+    const customer = await context.prisma.customer({ email: args.email })
+    if (!customer) {
+      throw new Error('No such customer found')
+    }
+
+    const valid = await bcrypt.compare(args.password, customer.password)
+    const oldValid = args.password === customer.password
+    if (!valid && !oldValid) {
+      throw new Error('Invalid password')
+    }
+  
+    return {
+      token: jwt.sign({ customerEmail: customer.email }, APP_SECRET),
+      customer,
+    }
+  }
+
 module.exports = {
     createCustomer,
     updateCustomer,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    signup,
+    login
 }
