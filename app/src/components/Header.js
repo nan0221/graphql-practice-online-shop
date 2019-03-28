@@ -51,7 +51,8 @@ class Header extends Component {
       this.props.auth.logout();
       // log out of auth0
       const logoutLink = "https://nan0221.au.auth0.com/v2/logout"
-      window.open(logoutLink)
+      var win = window.open(logoutLink, '_blank')
+      setTimeout(function() { win.close();}, 400);
     }
 
     // update store
