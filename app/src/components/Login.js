@@ -14,6 +14,8 @@ import { Modal, Button } from 'react-bootstrap'
 import { ApolloConsumer, Mutation } from 'react-apollo'
 import { LOGIN_CUSTOMER, SIGNUP_CUSTOMER } from './gql'
 
+import { AUTH_TOKEN } from '../index'
+
 const mapStateToProps = state => ({
     state
 })
@@ -29,11 +31,19 @@ const mapDispatchToProps = dispatch => ({
 class Login extends Component {
     constructor(props){
         super(props)
-        this.login = this.login.bind(this)
+        this._auth0login = this._auth0login.bind(this)
     }
 
-    login() {
+    lastLoggedInUser = localStorage.getItem('lastLoggedInUser') || null
+
+    _auth0login() {
         this.props.auth.login();
+    }
+
+    _localLogin = async data => {
+        const { token } = data.login
+        localStorage.setItem(AUTH_TOKEN, token)
+        localStorage.setItem('lastLoggedInUser', data.login.customer.email)
     }
 
     _getLoginDetails = () => {
@@ -41,7 +51,8 @@ class Login extends Component {
         let email = document.getElementsByName('loginEmail')[0].value
         let password = document.getElementsByName('loginPassword')[0].value.toString()
         return {
-            email: email || ''
+            email: email || '',
+            password: password || ''
         }
     }
 
@@ -49,26 +60,27 @@ class Login extends Component {
         if(document.getElementsByName('signupEmail').length === 0) return 0
         let email = document.getElementsByName('signupEmail')[0].value
         let password = document.getElementsByName('signupPassword')[0].value
-        let fName = document.getElementsByName('signupFirstName')[0].value
-        let lName = document.getElementsByName('signupLastName')[0].value
-        let address = document.getElementsByName('signupAddress')[0].value
-        let phone = document.getElementsByName('signupPhone')[0].value
+        // let fName = document.getElementsByName('signupFirstName')[0].value
+        // let lName = document.getElementsByName('signupLastName')[0].value
+        // let address = document.getElementsByName('signupAddress')[0].value
+        // let phone = document.getElementsByName('signupPhone')[0].value
 
         return {
             email: email,
             password: password,
-            firstName: fName,
-            lastName: lName,
-            address: address,
-            phone: phone
+            // firstName: fName,
+            // lastName: lName,
+            // address: address,
+            // phone: phone
         }
     }
 
     _createCustomerData = (e, func) => {
         if(!e) return false
         func({variables: this._getSignupDetails()}).then(data => {
-            console.log(data.data)
-            this.props.loginCustomer(data.data.createCustomer.email)
+            // console.log(data.data)
+            const customer = data.data.signup.customer
+            this.props.loginCustomer(customer.email, customer.role)
         })
     }
 
@@ -83,7 +95,7 @@ class Login extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <label htmlFor="loginEmail" className="m-r-10 display-block">Username</label>
-                        <input type="text" name="loginEmail" placeholder="name@example.com" className="w-100pc"/>
+                        <input type="text" name="loginEmail" placeholder={this.lastLoggedInUser} className="w-100pc"/>
                         <br />
                         <label htmlFor="loginPassword" className="m-r-10 m-t-10 display-block">Password</label>
                         <input type="password" name="loginPassword" className="w-100pc"/>
@@ -94,23 +106,23 @@ class Login extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.props.closeLoginModal}>Cancel</Button>
-                        <button type="button" className="btn btn-dark m-r-10" onClick={this.login.bind(this)}>
+                        <button type="button" className="btn btn-dark m-r-10" onClick={this._auth0login.bind(this)}>
                             <img src={require('../img/auth0-logo.png')} width="60" height="auto" className="m-r-3" alt="Auth0 "/> Log in
                         </button>
                         <ApolloConsumer>
                             {client => (
                                 <Button variant="primary" 
                                     onClick={async () => {
-                                        const { data } = await client.query({
-                                            query: LOGIN_CUSTOMER,
+                                        const { data } = await client.mutate({
+                                            mutation: LOGIN_CUSTOMER,
                                             variables: this._getLoginDetails()
                                         });
-                                        let password = document.getElementsByName('loginPassword')[0].value.toString()
-                                        if(data.customer !== null && data.customer.password !== null && data.customer.password === password) {
-                                            this.props.loginCustomer(data.customer.email, data.customer.role)
-                                            this.props.setShoppingCart(data.customer.products)
-                                        } else {
-                                            this.props.loginCustomer('')
+
+                                        if(data.login.token) {
+                                            this._localLogin(data)
+                                            const customer = data.login.customer
+                                            this.props.loginCustomer(customer.email, customer.role)
+                                            this.props.setShoppingCart(customer.products)
                                         }
                                     }}>
                                     Log in

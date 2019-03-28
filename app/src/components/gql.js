@@ -61,23 +61,40 @@ export const DELETE_PRODUCT = gql`
 `
 
 // query customer details
-export const LOGIN_CUSTOMER = gql`
+export const LOGIN_CUSTOMER_AUTH0 = gql`
     query customer($email: String!) {
         customer(email: $email) {
             email
-            password
             products
             role
         }
     }
 `
 
+// login customer (local)
+export const LOGIN_CUSTOMER = gql`
+    mutation LoginMutation($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+            token
+            customer {
+                email
+                products
+                role
+            }
+        }
+    }
+`
+
 // add new customer
 export const SIGNUP_CUSTOMER = gql`
-    mutation createCustomer($email: String!, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
-        createCustomer(email: $email, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
-            email
-            password
+    mutation SignupMutation($email: String!, $password: String) {
+        signup(email: $email, password: $password) {
+            token
+            customer {
+                email
+                products
+                role
+            }
         }
     }
 `

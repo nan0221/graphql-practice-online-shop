@@ -6,8 +6,12 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { login } from '../actions/login'
 import { logout } from '../actions/logout'
+import { loginCustomer } from '../actions/loginCustomer'
 import { openShoppingCart } from '../actions/openShoppingCart'
+import { setShoppingCart } from '../actions/setShoppingCart'
 import { addProduct } from '../actions/addProduct'
+
+import { AUTH_TOKEN } from '../index';
 
 const mapStateToProps = state => ({
   state
@@ -16,7 +20,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   login: () => dispatch(login()),
   logout: () => dispatch(logout()),
+  loginCustomer: (email, role) => dispatch(loginCustomer(email, role)),
   openShoppingCart: () => dispatch(openShoppingCart()),
+  setShoppingCart: (products) => dispatch(setShoppingCart(products)),
   addProduct: () => dispatch(addProduct()),
 })
 
@@ -34,13 +40,23 @@ class Header extends Component {
   }
 
   logout() {
-    // clear data in localStorage
-    this.props.auth.logout();
+    const { isAuthenticated } = this.props.auth
+    // local
+    if(!isAuthenticated()) {
+      localStorage.removeItem(AUTH_TOKEN)
+      localStorage.removeItem('lastLoggedInUser')
+    } else {
+      // auth0
+      // clear data in localStorage
+      this.props.auth.logout();
+      // log out of auth0
+      const logoutLink = "https://nan0221.au.auth0.com/v2/logout"
+      window.open(logoutLink)
+    }
+
     // update store
     this.props.logout()
-    // log out of auth0
-    const logoutLink = "https://nan0221.au.auth0.com/v2/logout"
-    window.open(logoutLink)
+    this.props.setShoppingCart('')
   }
 
   componentDidMount() {
@@ -48,6 +64,12 @@ class Header extends Component {
 
     if (localStorage.getItem('isLoggedIn') === 'true') {
       renewSession();
+    }
+
+    const loggedInUser = localStorage.getItem('lastLoggedInUser') || ''
+    if(loggedInUser !== '') {
+      this.props.loginCustomer(loggedInUser)
+      this.props.setShoppingCart('requiresLogin')
     }
   }
 
@@ -74,12 +96,13 @@ class Header extends Component {
                             <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
                           }
                           <button type="button" className="btn btn-outline-warning m-r-10" onClick={this.props.openShoppingCart}>Shopping cart</button>
-                          {!isAuthenticated() && (
+                          <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Log out</button>
+                          {/* {!isAuthenticated() && (
                               <button type="button" className="btn btn-outline-light" onClick={this.props.logout}>Log out</button>
                           )}
                           {isAuthenticated() && (
                               <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Log out</button>
-                          )}
+                          )} */}
                         </span>
                       }
 

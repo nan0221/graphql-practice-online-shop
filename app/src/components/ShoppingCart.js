@@ -4,6 +4,7 @@ import '../styles/template.css'
 
 import { connect } from 'react-redux'
 import { closeShoppingCart } from '../actions/closeShoppingCart'
+import { login } from '../actions/login'
 
 import { Modal, Button, Row, Col } from 'react-bootstrap'
 
@@ -17,6 +18,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     closeShoppingCart: () => dispatch(closeShoppingCart()),
+    login: () => dispatch(login()),
 })
 
 class ShoppingCart extends Component {
@@ -61,6 +63,11 @@ class ShoppingCart extends Component {
         return uniqProducts
     }
 
+    _login = () => {
+        this.props.closeShoppingCart()
+        this.props.login()
+    }
+
     render() {
         return (
             <Modal show={this.props.state.shoppingCartReducer.shoppingCartOpen} 
@@ -70,8 +77,19 @@ class ShoppingCart extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>View shopping cart</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    { (this.props.state.shoppingCartReducer.products !== '' && this.props.state.shoppingCartReducer.products !== null) &&
+
+                {this.props.state.shoppingCartReducer.products === 'requiresLogin' && 
+                    <Modal.Body>
+                        Please log in to view your shopping cart.
+                        <div>
+                            <button type="button" className="btn btn-primary m-t-10" onClick={this._login}>Login</button>
+                        </div>
+                    </Modal.Body>
+                }
+                
+                { this.props.state.shoppingCartReducer.products !== 'requiresLogin' &&
+                    <div>
+                    <Modal.Body>
                         <ApolloConsumer>
                             {client => (
                                 <ul>
@@ -87,15 +105,25 @@ class ShoppingCart extends Component {
                                 </ul>
                             )}
                         </ApolloConsumer>
-                    }
-                    { (this.props.state.shoppingCartReducer.products === '' || this.props.state.shoppingCartReducer.products === null) &&
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
+                        <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
+                    </Modal.Footer>
+                    </div>
+                }
+
+                { (this.props.state.shoppingCartReducer.products === '' || this.props.state.shoppingCartReducer.products === null) &&
+                    <div>
+                    <Modal.Body>
                         <div>Products added to your shopping cart will be displayed here.</div>
-                    }
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
-                    <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
-                </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
+                        <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
+                    </Modal.Footer>
+                    </div>
+                }
             </Modal>
 
         );

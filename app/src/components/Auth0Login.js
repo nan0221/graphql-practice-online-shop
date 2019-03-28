@@ -4,7 +4,7 @@ import { loginCustomer } from '../actions/loginCustomer'
 import { setShoppingCart } from '../actions/setShoppingCart'
 
 import { Query, Mutation } from 'react-apollo'
-import { LOGIN_CUSTOMER, SIGNUP_CUSTOMER } from './gql'
+import { LOGIN_CUSTOMER_AUTH0, SIGNUP_CUSTOMER } from './gql'
 
 const mapStateToProps = state => ({
     state
@@ -45,7 +45,7 @@ class Profile extends Component {
         return (
             <div className="container">
                 { (isAuthenticated() && profile !== undefined) &&
-                    <Query query={LOGIN_CUSTOMER} variables={{email: profile.name}}>
+                    <Query query={LOGIN_CUSTOMER_AUTH0} variables={{email: profile.name}}>
                         {({ loading, error, data }) => {
                             if (loading) return null
                             if (error) return <div>{error.message}</div>

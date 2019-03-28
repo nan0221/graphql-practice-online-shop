@@ -12,11 +12,24 @@ import { Provider } from 'react-redux'
 import configureStore from './store';
 
 import { split } from 'apollo-link'
+import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
+export const AUTH_TOKEN = 'auth-token'
+
 const httpLink = createHttpLink({
     uri: 'http://localhost:4000'
+})
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem(AUTH_TOKEN)
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  }
 })
 
 const wsLink = new WebSocketLink({
@@ -24,21 +37,20 @@ const wsLink = new WebSocketLink({
     options: {
       reconnect: true,
       connectionParams: {
-        // authToken: localStorage.getItem(AUTH_TOKEN),
+        authToken: localStorage.getItem(AUTH_TOKEN),
       }
     }
   })
-  
+
   const link = split(
     ({ query }) => {
       const { kind, operation } = getMainDefinition(query)
       return kind === 'OperationDefinition' && operation === 'subscription'
     },
     wsLink,
-    httpLink
-    // authLink.concat(httpLink)
+    authLink.concat(httpLink)
   )
-  
+
   const client = new ApolloClient({
     link,
     cache: new InMemoryCache()
