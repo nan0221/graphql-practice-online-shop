@@ -12,6 +12,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "graphql-yoga": "^1.17.4",
-    "prisma-client-lib": "^1.28.1"
+    "prisma-client-lib": "^1.28.1",
+    "utils": "^0.3.1"
   }
 }

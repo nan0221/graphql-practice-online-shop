@@ -10,6 +10,8 @@ type Mutation {
   deleteProduct(id: ID!): Product
   createCustomer(email: String!, password: String, firstName: String, lastName: String, address: String, phone: String, product: String): Customer
   updateCustomer(data: CustomerUpdateInput, email: String!): Customer
+  login(email: String!, password: String): AuthPayLoad
+  signup(email: String!, password: String): AuthPayLoad
 }
 
 type Subscription {
@@ -36,6 +38,11 @@ type Customer {
   password: String
   products: String
   role: Role
+}
+
+type AuthPayLoad {
+  token: String
+  customer: Customer
 }
 
 input ProductUpdateInput {
