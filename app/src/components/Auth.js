@@ -13,7 +13,7 @@ export default class Auth {
     clientID: 'RHOCi2bLl2TTLuRAm9hgVXYLwIqcyMtH',
     redirectUri: 'http://localhost:3000/',
     responseType: 'token id_token',
-    scope: 'openid profile read:messages write:messages'
+    scope: 'openid profile'
   });
 
   constructor() {
