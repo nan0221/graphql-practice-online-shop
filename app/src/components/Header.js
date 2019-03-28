@@ -39,7 +39,7 @@ class Header extends Component {
     // update store
     this.props.logout()
     // log out of auth0
-    const logoutLink = "https://nan0221.au.auth0.com/v2/logout?returnTo=http%3A%2F%2Flocalhost:3000/"
+    const logoutLink = "https://nan0221.au.auth0.com/v2/logout"
     window.open(logoutLink)
   }
 
