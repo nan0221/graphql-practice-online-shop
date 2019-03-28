@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import '../styles/App.css';
 import '../styles/template.css'
+
 import ReactHtmlParser from 'react-html-parser';
+
 import { connect } from 'react-redux';
 import { editProduct } from '../actions/editProduct'
 import { login } from '../actions/login'
 import { setShoppingCart } from '../actions/setShoppingCart'
-import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
 
-const ADD_PRODUCT_BY_CUSTOMER = gql`
-    mutation updateCustomer($email: String!, $data: CustomerUpdateInput) {
-        updateCustomer(email: $email, data: $data) {
-            products
-        }
-    }
-`
+import { Mutation } from 'react-apollo'
+import { ADD_PRODUCT_BY_CUSTOMER } from './gql'
 
 const mapStateToProps = state => ({
   state

@@ -1,36 +1,18 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
 import '../styles/template.css'
-import { connect } from 'react-redux';
+
+import { connect } from 'react-redux'
 import { closeLoginModal } from '../actions/closeLoginModal'
 import { signupMode } from '../actions/signupMode'
 import { loginMode } from '../actions/loginMode'
 import { loginCustomer } from '../actions/loginCustomer'
 import { setShoppingCart } from '../actions/setShoppingCart'
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import gql from 'graphql-tag'
+
+import { Modal, Button } from 'react-bootstrap'
+
 import { ApolloConsumer, Mutation } from 'react-apollo'
-
-export const LOGIN_CUSTOMER = gql`
-    query customer($email: String!) {
-        customer(email: $email) {
-            email
-            password
-            products
-            role
-        }
-    }
-`
-
-export const SIGNUP_CUSTOMER = gql`
-    mutation createCustomer($email: String!, $password: String, $firstName: String, $lastName: String, $address: String, $phone: String) {
-        createCustomer(email: $email, password: $password, firstName: $firstName, lastName: $lastName, address: $address, phone: $phone) {
-            email
-            password
-        }
-    }
-`
+import { LOGIN_CUSTOMER, SIGNUP_CUSTOMER } from './gql'
 
 const mapStateToProps = state => ({
     state

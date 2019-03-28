@@ -1,43 +1,13 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
 import '../styles/template.css'
+
+import { connect } from 'react-redux'
 import Product from './Product'
-import gql from 'graphql-tag'
+
 import { Query, Subscription } from 'react-apollo'
 import { existsSync } from 'fs';
-import { connect } from 'react-redux'
-
-export const ALL_PRODUCTS = gql`
-    query AllProducts {
-        products {
-            id
-            name
-            price
-            desc
-            photo
-        }
-    }
-`
-
-const PRODUCT_CREATED = gql `
-    subscription {
-        productCreated {
-            id
-            name
-            price
-            desc
-            photo
-        }
-    }
-`
-
-const PRODUCT_DELETED = gql `
-    subscription {
-        productDeleted {
-            id
-        }
-    }
-`
+import { ALL_PRODUCTS, PRODUCT_CREATED, PRODUCT_DELETED } from './gql'
 
 const mapStateToProps = state => ({
     state

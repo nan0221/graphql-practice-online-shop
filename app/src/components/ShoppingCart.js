@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
 import '../styles/template.css'
 
 import { connect } from 'react-redux'
 import { closeShoppingCart } from '../actions/closeShoppingCart'
-import { Modal, Button, Row, Col } from 'react-bootstrap';
 
-import { FIND_PRODUCT } from './Edit'
+import { Modal, Button, Row, Col } from 'react-bootstrap'
 
 import { ApolloConsumer, Query } from 'react-apollo'
+import { FIND_PRODUCT } from './gql'
+
 
 const mapStateToProps = state => ({
     state

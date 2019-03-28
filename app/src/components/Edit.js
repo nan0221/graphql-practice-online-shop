@@ -1,55 +1,12 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
 import '../styles/template.css'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { closeEditModal } from '../actions/closeEditModal'
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import gql from 'graphql-tag'
+
+import { Modal, Button} from 'react-bootstrap'
 import { Query, Mutation } from 'react-apollo'
-
-export const FIND_PRODUCT = gql`
-    query Product($id: ID!) {
-        product(id: $id) {
-            id
-            name
-            price
-            desc
-            photo
-        }
-    }
-`
-
-export const UPDATE_PRODUCT = gql`
-    mutation updateProduct($id: ID!, $input: ProductUpdateInput) {
-        updateProduct(id: $id, input: $input) {
-            id
-            name
-            price
-            desc
-            photo
-        }
-    }
-`
-
-export const CREATE_PRODUCT = gql`
-    mutation createProduct($name: String, $price: String, $photo: String, $desc:String) {
-        createProduct(name: $name, price: $price, photo: $photo, desc: $desc) {
-            name
-            price
-            desc
-            photo
-        }
-    }
-`
-
-export const DELETE_PRODUCT = gql`
-    mutation deleteProduct($id: ID!) {
-        deleteProduct(id: $id) {
-            id
-        }
-    }
-`
+import { FIND_PRODUCT, UPDATE_PRODUCT, CREATE_PRODUCT, DELETE_PRODUCT } from './gql'
 
 const mapStateToProps = state => ({
     state

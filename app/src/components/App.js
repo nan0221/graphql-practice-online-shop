@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import '../styles/App.css';
+import React, { Component } from 'react'
+import '../styles/App.css'
+
 import { Switch, Route, Router } from 'react-router-dom'
 import Home from './Home'
 import Login from './Login'
 import Edit from './Edit'
-import { connect } from 'react-redux';
+import ShoppingCart from './ShoppingCart'
+import Auth from './Auth'
+import history from './history'
+
+import { connect } from 'react-redux'
 import { editProduct } from '../actions/editProduct'
-import ShoppingCart from './ShoppingCart';
-import Auth from './Auth';
-import history from './history';
 
 const auth = new Auth();
 

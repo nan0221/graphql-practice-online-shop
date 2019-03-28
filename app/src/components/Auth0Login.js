@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loginCustomer } from '../actions/loginCustomer'
 import { setShoppingCart } from '../actions/setShoppingCart'
-import { LOGIN_CUSTOMER, SIGNUP_CUSTOMER } from './Login'
+
 import { Query, Mutation } from 'react-apollo'
+import { LOGIN_CUSTOMER, SIGNUP_CUSTOMER } from './gql'
 
 const mapStateToProps = state => ({
     state
