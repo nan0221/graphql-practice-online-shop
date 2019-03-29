@@ -29,7 +29,7 @@ class ShoppingCart extends Component {
                 if (error) return <div>{error.message}</div>
                 const product = data.product
                 return (
-                    <li>
+                    <li key={product.id}>
                         <Row>
                             <Col><img className="img-fluid" src={require("../img/products/"+product.photo)} width="40" height="auto" alt={product.name} /></Col>
                             <Col xl="8" lg="8" md="6" sm="5" xs="5">{product.name}</Col>
@@ -48,7 +48,7 @@ class ShoppingCart extends Component {
         allProductId.forEach(productId => {
             if(uniqProducts.find(product => product.id === productId) !== undefined){
                 let existingQuantity = uniqProducts.find(product => product.id === productId).quantity
-                uniqProducts.pop(uniqProducts.find(product => product.id === productId))
+                uniqProducts = uniqProducts.filter(product => product.id !== productId)
                 uniqProducts.push({
                     id: productId,
                     quantity: existingQuantity + 1
