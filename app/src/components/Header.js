@@ -13,8 +13,12 @@ import { addProduct } from '../actions/addProduct'
 
 import { AUTH_TOKEN } from '../index';
 
-const mapStateToProps = state => ({
-  state
+import { instanceOf } from 'prop-types';
+import { Cookies } from 'react-cookie';
+
+const mapStateToProps = (state, ownProps) => ({
+  state: state,
+  cookies: ownProps.cookies,
  })
 
 const mapDispatchToProps = dispatch => ({
@@ -27,6 +31,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Header extends Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  }
+
   constructor(props){
     super(props)
   }
@@ -41,14 +49,15 @@ class Header extends Component {
 
   logout() {
     const { isAuthenticated } = this.props.auth
+    const { cookies } = this.props;
     // local
     if(!isAuthenticated()) {
-      localStorage.removeItem(AUTH_TOKEN)
-      localStorage.removeItem('lastLoggedInUser')
+      cookies.remove(AUTH_TOKEN)
+      cookies.remove('lastLoggedInUser')
     } else {
       // auth0
-      // clear data in localStorage
-      this.props.auth.logout();
+      // clear data in cookies
+      this.props.auth.logout(cookies);
       // log out of auth0
       const logoutLink = "https://nan0221.au.auth0.com/v2/logout"
       var win = window.open(logoutLink, '_blank')
@@ -62,12 +71,13 @@ class Header extends Component {
 
   componentDidMount() {
     const { renewSession } = this.props.auth;
+    const { cookies } = this.props;
 
-    if (localStorage.getItem('isLoggedIn') === 'true') {
+    if (cookies.get('isLoggedIn') === 'true') {
       renewSession();
     }
 
-    const loggedInUser = localStorage.getItem('lastLoggedInUser') || ''
+    const loggedInUser = cookies.get('lastLoggedInUser') || ''
     if(loggedInUser !== '') {
       this.props.loginCustomer(loggedInUser)
       this.props.setShoppingCart('requiresLogin')
@@ -75,8 +85,6 @@ class Header extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.auth
-
     return (
         <header>
             <div className="navbar navbar-dark bg-dark shadow-sm">
@@ -98,12 +106,6 @@ class Header extends Component {
                           }
                           <button type="button" className="btn btn-outline-warning m-r-10" onClick={this.props.openShoppingCart}>Shopping cart</button>
                           <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Log out</button>
-                          {/* {!isAuthenticated() && (
-                              <button type="button" className="btn btn-outline-light" onClick={this.props.logout}>Log out</button>
-                          )}
-                          {isAuthenticated() && (
-                              <button type="button" className="btn btn-outline-light" onClick={this.logout.bind(this)}>Log out</button>
-                          )} */}
                         </span>
                       }
 

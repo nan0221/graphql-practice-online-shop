@@ -16,14 +16,18 @@ import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
+import { CookiesProvider, Cookies } from 'react-cookie'
+
 export const AUTH_TOKEN = 'auth-token'
+
+const cookies = new Cookies()
 
 const httpLink = createHttpLink({
     uri: 'http://localhost:4000'
 })
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(AUTH_TOKEN)
+  const token = cookies.get(AUTH_TOKEN)
   return {
     headers: {
       ...headers,
@@ -37,7 +41,7 @@ const wsLink = new WebSocketLink({
     options: {
       reconnect: true,
       connectionParams: {
-        authToken: localStorage.getItem(AUTH_TOKEN),
+        authToken: cookies.get(AUTH_TOKEN),
       }
     }
   })
@@ -57,14 +61,16 @@ const wsLink = new WebSocketLink({
   })
 
 ReactDOM.render(
+  <CookiesProvider>
     <BrowserRouter>
         <ApolloProvider client={client}>
             <Provider store={configureStore()}>
                 <App />
             </Provider>
         </ApolloProvider>
-    </BrowserRouter>,
-    document.getElementById('root')
+    </BrowserRouter>
+  </CookiesProvider>,
+  document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

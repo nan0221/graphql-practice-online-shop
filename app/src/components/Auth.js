@@ -13,7 +13,7 @@ export default class Auth {
     clientID: 'RHOCi2bLl2TTLuRAm9hgVXYLwIqcyMtH',
     redirectUri: 'http://localhost:3000/',
     responseType: 'token id_token',
-    scope: 'openid profile'
+    scope: 'openid profile read:messages write:messages'
   });
 
   constructor() {
@@ -32,14 +32,15 @@ export default class Auth {
     this.auth0.authorize();
   }
 
-  handleAuthentication() {
+  handleAuthentication(cookies) {
     this.auth0.parseHash((err, authResult) => {
+      // console.log(authResult)
       if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
+        this.setSession(authResult, cookies);
       } else if (err) {
         history.replace('/');
         console.log(err);
-        alert(`Error: ${err.error}. Check the console for further details.`);
+        // alert(`Error: ${err.error}. Check the console for further details.`);
       }
     });
   }
@@ -52,9 +53,13 @@ export default class Auth {
     return this.idToken;
   }
 
-  setSession(authResult) {
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
+  setSession(authResult, cookies) {
+    // Set isLoggedIn flag in cookies
+    if(cookies) {
+      const now = new Date()
+      now.setHours(now.getHours() + 48)
+      cookies.set('isLoggedIn', 'true', { path: '/', expires: now });
+    }
 
     // Set the time that the access token will expire at
     let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
@@ -63,16 +68,16 @@ export default class Auth {
     this.expiresAt = expiresAt;
 
     // schedule a token renewal
-    this.scheduleRenewal();
+    this.scheduleRenewal(cookies);
 
     // navigate to the home route
     history.replace('/');
   }
 
-  renewSession() {
+  renewSession(cookies) {
     this.auth0.checkSession({}, (err, authResult) => {
        if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
+         this.setSession(authResult, cookies);
        } else if (err) {
          this.logout();
          console.log(err);
@@ -81,12 +86,12 @@ export default class Auth {
     });
   }
 
-  scheduleRenewal() {
+  scheduleRenewal(cookies) {
     let expiresAt = this.expiresAt;
     const timeout = expiresAt - Date.now();
     if (timeout > 0) {
       this.tokenRenewalTimeout = setTimeout(() => {
-        this.renewSession();
+        this.renewSession(cookies);
       }, timeout);
     }
   }
@@ -104,7 +109,7 @@ export default class Auth {
     });
   }
 
-  logout() {
+  logout(cookies) {
     // Remove tokens and expiry time
     this.accessToken = null;
     this.idToken = null;
@@ -113,8 +118,8 @@ export default class Auth {
     // Remove user profile
     this.userProfile = null;
 
-    // Remove isLoggedIn flag from localStorage
-    localStorage.removeItem('isLoggedIn');
+    // Remove isLoggedIn flag from cookies
+    cookies.remove('isLoggedIn');
 
     // Clear token renewal
     clearTimeout(this.tokenRenewalTimeout);

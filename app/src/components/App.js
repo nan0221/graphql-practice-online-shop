@@ -12,11 +12,13 @@ import history from './history'
 import { connect } from 'react-redux'
 import { editProduct } from '../actions/editProduct'
 
+import { withCookies } from 'react-cookie'
+
 const auth = new Auth();
 
-const handleAuthentication = ({location}) => {
+const handleAuthentication = ({location}, cookies) => {
   if (/access_token|id_token|error/.test(location.hash)) {
-    auth.handleAuthentication();
+    auth.handleAuthentication(cookies);
   }
 }
 
@@ -41,7 +43,7 @@ class App extends Component {
             JSON.stringify(this.props, null, 4)
           }
         </pre>
-        <Login auth={auth} />
+        <Login auth={auth} cookies={this.props.cookies} />
         <Edit />
         <ShoppingCart />
         {/* <Switch>
@@ -49,8 +51,8 @@ class App extends Component {
         </Switch> */}
         <Router history={history}>
           <Route path="/" render={(props) => {
-            handleAuthentication(props);
-            return <Home auth={auth} {...props} /> 
+            handleAuthentication(props, this.props.cookies);
+            return <Home auth={auth} {...props} cookies={this.props.cookies} /> 
           }}/>
         </Router>
       </div>
@@ -58,4 +60,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(App))

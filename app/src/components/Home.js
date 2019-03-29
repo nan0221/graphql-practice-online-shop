@@ -7,6 +7,13 @@ import Promotion from './Promotion'
 import ProductList from './ProductList'
 import Auth0Login from './Auth0Login'
 
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state, ownProps) => ({
+  state: state,
+  cookies: ownProps.cookies
+ })
+
 class Home extends Component {
   render() {
     const { isAuthenticated } = this.props.auth
@@ -16,7 +23,7 @@ class Home extends Component {
             { isAuthenticated() && (
                 <Auth0Login auth={this.props.auth}/>
             )}
-            <Header auth={this.props.auth} isAuth={isAuthenticated()}/>
+            <Header auth={this.props.auth} isAuth={isAuthenticated()} cookies={this.props.cookies}/>
             <main role="main">
                 <Promotion />
                 <ProductList />
@@ -27,4 +34,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default connect(mapStateToProps, null)(Home)

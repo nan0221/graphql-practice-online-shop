@@ -16,6 +16,9 @@ import { LOGIN_CUSTOMER, SIGNUP_CUSTOMER } from './gql'
 
 import { AUTH_TOKEN } from '../index'
 
+import { instanceOf } from 'prop-types';
+import { Cookies } from 'react-cookie';
+
 const mapStateToProps = state => ({
     state
 })
@@ -29,12 +32,16 @@ const mapDispatchToProps = dispatch => ({
 })
   
 class Login extends Component {
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    }
+
     constructor(props){
         super(props)
         this._auth0login = this._auth0login.bind(this)
     }
 
-    lastLoggedInUser = localStorage.getItem('lastLoggedInUser') || null
+    lastLoggedInUser = this.props.cookies.get('lastLoggedInUser') || null
 
     _auth0login() {
         this.props.auth.login();
@@ -42,8 +49,11 @@ class Login extends Component {
 
     _localLogin = async data => {
         const { token } = data.login
-        localStorage.setItem(AUTH_TOKEN, token)
-        localStorage.setItem('lastLoggedInUser', data.login.customer.email)
+        const { cookies } = this.props;
+        const now = new Date()
+        now.setHours(now.getHours() + 48)
+        cookies.set(AUTH_TOKEN, token, { path: '/', expires: now });
+        cookies.set('lastLoggedInUser', data.login.customer.email, { path: '/', expires: now });
     }
 
     _getLoginDetails = () => {
