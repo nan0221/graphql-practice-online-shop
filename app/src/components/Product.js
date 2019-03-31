@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { editProduct } from '../actions/editProduct'
 import { login } from '../actions/login'
 import { setShoppingCart } from '../actions/setShoppingCart'
+import { openShoppingCart } from '../actions/openShoppingCart'
 
 import { Mutation } from 'react-apollo'
 import { ADD_PRODUCT_BY_CUSTOMER } from './gql'
@@ -19,7 +20,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editProduct: (id) => dispatch(editProduct(id)),
   login: () => dispatch(login()),
-  setShoppingCart: (products) => dispatch(setShoppingCart(products))
+  setShoppingCart: (products) => dispatch(setShoppingCart(products)),
+  openShoppingCart: () => dispatch(openShoppingCart())
 })
 
 class Product extends Component {
@@ -29,6 +31,10 @@ class Product extends Component {
 
   _addToCart = (e, func) => {
     if(!e) return false
+    if(this.props.state.shoppingCartReducer.products === "requiresLogin") {
+      this.props.login()
+      return false
+    }
     const customerId = this._getCustomerId()
     if(customerId === '') {
       this.props.login()
@@ -50,6 +56,7 @@ class Product extends Component {
       }}).then(data => {
         // TODO: use subscription method instead
         this.props.setShoppingCart(data.data.updateCustomer.products)
+        this.props.openShoppingCart()
     })
     }
   }
