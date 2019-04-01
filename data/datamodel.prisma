@@ -8,6 +8,7 @@ type Product {
 
 
 type Customer {
+  id: ID! @unique
   email: String! @unique
   firstName: String
   lastName: String
