@@ -47,7 +47,6 @@ class ProductList extends Component {
             let existingProducts = this.state.products
             const newProduct = subscriptionData.data.productUpdated
             existingProducts = existingProducts.filter(product => product.id !== newProduct.id)
-            existingProducts.push(newProduct)
             this.setState({
                 products: existingProducts.push(newProduct)
             })
