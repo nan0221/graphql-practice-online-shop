@@ -16,6 +16,7 @@ type Mutation {
 
 type Subscription {
   productCreated: Product
+  productUpdated: Product
   productDeleted: Product
   customerUpdated: Customer
 }
