@@ -10,6 +10,7 @@ import { Modal, Button, Row, Col } from 'react-bootstrap'
 
 import { ApolloConsumer, Query } from 'react-apollo'
 import { FIND_PRODUCT } from './gql'
+import { Cookies } from 'react-cookie';
 
 
 const mapStateToProps = state => ({
@@ -43,7 +44,13 @@ class ShoppingCart extends Component {
     )
 
     getProducts = () => {
-        let allProductId = this.props.state.shoppingCartReducer.products.split(',')
+        const { cookies } = this.props
+        let allProductId
+        if(this.props.state.shoppingCartReducer.products !== '') {
+            allProductId = this.props.state.shoppingCartReducer.products.split(',')
+        } else {
+            allProductId = cookies.get('shoppingCart').split(',')
+        }
         let uniqProducts = []
         allProductId.forEach(productId => {
             if(uniqProducts.find(product => product.id === productId) !== undefined){
@@ -69,6 +76,7 @@ class ShoppingCart extends Component {
     }
 
     render() {
+        const { cookies } = this.props
         return (
             <Modal show={this.props.state.shoppingCartReducer.shoppingCartOpen} 
                 onHide={this.props.closeShoppingCart}
@@ -77,18 +85,8 @@ class ShoppingCart extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>View shopping cart</Modal.Title>
                 </Modal.Header>
-
-                {this.props.state.shoppingCartReducer.products === 'requiresLogin' && 
-                    <Modal.Body>
-                        Please log in to view your shopping cart.
-                        <div>
-                            <button type="button" className="btn btn-primary m-t-10" onClick={this._login}>Login</button>
-                        </div>
-                    </Modal.Body>
-                }
                 
-                { this.props.state.shoppingCartReducer.products !== 'requiresLogin' &&
-                    <div>
+                { (this.props.state.shoppingCartReducer.products !== '' || cookies.get('shoppingCart') !== '') &&
                     <Modal.Body>
                         <ApolloConsumer>
                             {client => (
@@ -106,14 +104,9 @@ class ShoppingCart extends Component {
                             )}
                         </ApolloConsumer>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
-                        <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
-                    </Modal.Footer>
-                    </div>
                 }
 
-                { (this.props.state.shoppingCartReducer.products === '' || this.props.state.shoppingCartReducer.products === null) &&
+                { (this.props.state.shoppingCartReducer.products === '' && cookies.get('shoppingCart') === '') &&
                     <div>
                     <Modal.Body>
                         <div>Products added to your shopping cart will be displayed here.</div>

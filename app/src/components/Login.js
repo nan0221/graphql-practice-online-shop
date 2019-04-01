@@ -54,6 +54,7 @@ class Login extends Component {
         now.setHours(now.getHours() + 48)
         cookies.set(AUTH_TOKEN, token, { path: '/', expires: now });
         cookies.set('lastLoggedInUser', data.login.customer.email, { path: '/', expires: now });
+        cookies.set('isAdmin', data.login.customer.role, { path: '/', expires: now });
     }
 
     _getLoginDetails = () => {
@@ -95,6 +96,7 @@ class Login extends Component {
     }
 
     render() {
+        const { cookies } = this.props
         return (
             <div className="Login">
                 <Modal show={this.props.state.loginReducer.loginModalOpen && this.props.state.loginReducer.mode === 'login'} 
@@ -133,6 +135,9 @@ class Login extends Component {
                                             const customer = data.login.customer
                                             this.props.loginCustomer(customer.email, customer.role)
                                             this.props.setShoppingCart(customer.products)
+                                            const now = new Date()
+                                            now.setHours(now.getHours() + 48)
+                                            cookies.set('shoppingCart', customer.products, { path: '/', expires: now });
                                         }
                                     }}>
                                     Log in

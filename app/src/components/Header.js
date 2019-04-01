@@ -54,6 +54,8 @@ class Header extends Component {
     if(!isAuthenticated()) {
       cookies.remove(AUTH_TOKEN)
       cookies.remove('lastLoggedInUser')
+      cookies.remove('isAdmin')
+      cookies.remove('shoppingCart')
     } else {
       // auth0
       // clear data in cookies
@@ -80,11 +82,11 @@ class Header extends Component {
     const loggedInUser = cookies.get('lastLoggedInUser') || ''
     if(loggedInUser !== '') {
       this.props.loginCustomer(loggedInUser)
-      this.props.setShoppingCart('requiresLogin')
     }
   }
 
   render() {
+    const { cookies } = this.props
     return (
         <header>
             <div className="navbar navbar-dark bg-dark shadow-sm">
@@ -96,12 +98,12 @@ class Header extends Component {
                         </svg>
                         <strong>Online shop</strong>
                     </a>
-
+                    
                     <span className="d-flex">
                       {(this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.loggedInUser !== undefined) &&
                         <span>
                           <span className="text-white m-r-10">Welcome, {this.props.state.loginReducer.loggedInUser}</span>
-                          {this.props.state.loginReducer.isAdmin && 
+                          {(this.props.state.loginReducer.isAdmin || cookies.cookies.isAdmin === 'ADMIN') && 
                             <button type="button" className="btn btn-outline-light m-r-10" onClick={this.props.addProduct}>Add product</button>
                           }
                           <button type="button" className="btn btn-outline-warning m-r-10" onClick={this.props.openShoppingCart}>Shopping cart</button>

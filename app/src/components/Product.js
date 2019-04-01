@@ -31,10 +31,6 @@ class Product extends Component {
 
   _addToCart = (e, func) => {
     if(!e) return false
-    if(this.props.state.shoppingCartReducer.products === "requiresLogin") {
-      this.props.login()
-      return false
-    }
     const customerId = this._getCustomerId()
     if(customerId === '') {
       this.props.login()

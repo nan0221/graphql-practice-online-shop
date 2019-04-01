@@ -45,7 +45,7 @@ class App extends Component {
         </pre>
         <Login auth={auth} cookies={this.props.cookies} />
         <Edit />
-        <ShoppingCart />
+        <ShoppingCart cookies={this.props.cookies} />
         {/* <Switch>
           <Route exact path="/" component={Home} />
         </Switch> */}
