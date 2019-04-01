@@ -55,6 +55,7 @@ class Login extends Component {
         cookies.set(AUTH_TOKEN, token, { path: '/', expires: now });
         cookies.set('lastLoggedInUser', data.login.customer.email, { path: '/', expires: now });
         cookies.set('isAdmin', data.login.customer.role, { path: '/', expires: now });
+        cookies.set('shoppingCart', data.login.customer.products, { path: '/', expires: now });
     }
 
     _getLoginDetails = () => {

@@ -26,7 +26,7 @@ class Home extends Component {
             <Header auth={this.props.auth} isAuth={isAuthenticated()} cookies={this.props.cookies}/>
             <main role="main">
                 <Promotion />
-                <ProductList />
+                <ProductList cookies={this.props.cookies}/>
             </main>
             <Footer />
         </div>

@@ -74,7 +74,7 @@ class ProductList extends Component {
                         </Query>
                         
                         {Object.keys(this.state.products).length > 0 &&
-                            this.state.products.map(product => <Product key={product.id} name={product.name} desc={product.desc} price={product.price} photo={product.photo} id={product.id}/>)
+                            this.state.products.map(product => <Product key={product.id} name={product.name} desc={product.desc} price={product.price} photo={product.photo} id={product.id} cookies={this.props.cookies}/>)
                         }
                     </div>
                 </div>

@@ -66,6 +66,7 @@ class Product extends Component {
   }
 
   render() {
+    const { cookies } = this.props
     return (
         <div className="col-md-4">
         { this.props.photo &&
@@ -85,7 +86,7 @@ class Product extends Component {
                           }}
 
                         </Mutation>
-                        {(this.props.state.loginReducer.loggedInUser !== '' && this.props.state.loginReducer.isAdmin ) && 
+                        {(this.props.state.loginReducer.loggedInUser !== '' && (this.props.state.loginReducer.isAdmin || cookies.cookies.isAdmin === 'ADMIN' )) && 
                           <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => this.props.editProduct(this.props.id)}>Edit</button>
                         }
                       </div>

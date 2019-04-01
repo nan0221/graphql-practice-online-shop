@@ -113,7 +113,7 @@ class ShoppingCart extends Component {
                 }
                 <Modal.Footer>
                     <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
-                    { (this.props.state.shoppingCartReducer.products !== '' && cookies.get('shoppingCart') !== '') &&
+                    { (this.props.state.shoppingCartReducer.products !== '' || (cookies.get('shoppingCart') && cookies.get('shoppingCart') !== '')) &&
                         <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
                     }
                 </Modal.Footer>
