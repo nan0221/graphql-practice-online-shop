@@ -45,10 +45,10 @@ class ShoppingCart extends Component {
 
     getProducts = () => {
         const { cookies } = this.props
-        let allProductId
+        let allProductId = []
         if(this.props.state.shoppingCartReducer.products !== '') {
             allProductId = this.props.state.shoppingCartReducer.products.split(',')
-        } else {
+        } else if(cookies.get('shoppingCart')) {
             allProductId = cookies.get('shoppingCart').split(',')
         }
         let uniqProducts = []
@@ -86,7 +86,7 @@ class ShoppingCart extends Component {
                     <Modal.Title>View shopping cart</Modal.Title>
                 </Modal.Header>
                 
-                { (this.props.state.shoppingCartReducer.products !== '' || cookies.get('shoppingCart') !== '') &&
+                { (this.props.state.shoppingCartReducer.products !== '' || (cookies.get('shoppingCart') && cookies.get('shoppingCart') !== '')) &&
                     <Modal.Body>
                         <ApolloConsumer>
                             {client => (
@@ -106,17 +106,17 @@ class ShoppingCart extends Component {
                     </Modal.Body>
                 }
 
-                { (this.props.state.shoppingCartReducer.products === '' && cookies.get('shoppingCart') === '') &&
-                    <div>
+                { (this.props.state.shoppingCartReducer.products === '' && (!cookies.get('shoppingCart') || cookies.get('shoppingCart') === ''))  &&
                     <Modal.Body>
                         <div>Products added to your shopping cart will be displayed here.</div>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
-                        <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
-                    </Modal.Footer>
-                    </div>
                 }
+                <Modal.Footer>
+                    <Button variant="light" onClick={this.props.closeShoppingCart}>Proceed shopping</Button>
+                    { (this.props.state.shoppingCartReducer.products !== '' && cookies.get('shoppingCart') !== '') &&
+                        <Button variant="warning" onClick={this.props.closeShoppingCart} className="text-white">Checkout</Button>
+                    }
+                </Modal.Footer>
             </Modal>
 
         );
