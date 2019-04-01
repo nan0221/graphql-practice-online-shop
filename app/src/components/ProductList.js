@@ -7,7 +7,7 @@ import Product from './Product'
 
 import { Query, Subscription } from 'react-apollo'
 import { existsSync } from 'fs';
-import { ALL_PRODUCTS, PRODUCT_CREATED, PRODUCT_DELETED } from './gql'
+import { ALL_PRODUCTS, PRODUCT_CREATED, PRODUCT_UPDATED, PRODUCT_DELETED } from './gql'
 
 const mapStateToProps = state => ({
     state
@@ -19,11 +19,12 @@ class ProductList extends Component {
         this.state = {
             products: {}
         }
+        this._subscribeProductCreated = this._subscribeProductCreated.bind(this)
         this._subscribeProductUpdated = this._subscribeProductUpdated.bind(this)
         this._subscribeProductDeleted = this._subscribeProductDeleted.bind(this)
     }
 
-    _subscribeProductUpdated = subscribeToMore => {
+    _subscribeProductCreated = subscribeToMore => {
         subscribeToMore({
           document: PRODUCT_CREATED,
           updateQuery: (prev, { subscriptionData }) => {
@@ -34,6 +35,22 @@ class ProductList extends Component {
                     products: existingProducts.push(newProduct)
                 })
             }
+            return false
+          }
+        })
+    }
+
+    _subscribeProductUpdated = subscribeToMore => {
+        subscribeToMore({
+          document: PRODUCT_UPDATED,
+          updateQuery: (prev, { subscriptionData }) => {
+            let existingProducts = this.state.products
+            const newProduct = subscriptionData.data.productUpdated
+            existingProducts = existingProducts.filter(product => product.id !== newProduct.id)
+            existingProducts.push(newProduct)
+            this.setState({
+                products: existingProducts.push(newProduct)
+            })
             return false
           }
         })
@@ -67,6 +84,7 @@ class ProductList extends Component {
                                     })
                                 }
                                 
+                                this._subscribeProductCreated(subscribeToMore)
                                 this._subscribeProductUpdated(subscribeToMore)
                                 this._subscribeProductDeleted(subscribeToMore)
                                 return false

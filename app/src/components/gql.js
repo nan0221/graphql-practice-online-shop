@@ -123,6 +123,19 @@ export const PRODUCT_CREATED = gql `
     }
 `
 
+// subscribe to product updated
+export const PRODUCT_UPDATED = gql `
+    subscription {
+        productUpdated {
+            id
+            name
+            price
+            desc
+            photo
+        }
+    }
+`
+
 // subsribe to product deletion
 export const PRODUCT_DELETED = gql `
     subscription {
